@@ -1,7 +1,8 @@
 # Ebury
 Proyecto de aplicación para la plataforma de transacciones monetarias Ebury.
 
-Realizado por:
+## Realizado por
+
 Christian Berdejo Sánchez
 
 Ángel Fernández Civila
