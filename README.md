@@ -27,6 +27,6 @@ git diff <- muestra las diferencias con los archivos originales
 
 git add . <- añade toda la carpeta actual al staging area (comprobar con el diff que era la carpeta buena para no meter en el repositorio cosas raras amogus)
 
-got commit [-m "Mensaje"] <- guarda todos los cambios realizados del staging area al repositorio local. Con -m se puede poner un mensaje entre comillas diciendo los cambios que has hecho.
+git commit [-m "Mensaje"] <- guarda todos los cambios realizados del staging area al repositorio local. Con -m se puede poner un mensaje entre comillas diciendo los cambios que has hecho.
 
 git push <- sube todos los cambios que has añadido a tu repositorio local a este repositorio
