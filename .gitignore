@@ -24,4 +24,4 @@ hs_err_pid*
 
 # bloat de intellij
 .idea
-.iml
+*.iml
