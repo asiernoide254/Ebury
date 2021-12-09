@@ -1,4 +1,5 @@
 package Model;
 
-public class Dedicada {
+public class Dedicada extends CuentaEbury {
+    private CuentaBanco cuentaReferencia;
 }

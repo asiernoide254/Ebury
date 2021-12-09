@@ -1,4 +1,5 @@
 package Model;
 
-public class Pooled {
+public class Pooled extends CuentaEbury {
+    private CuentaBanco cuentaReferencia;
 }

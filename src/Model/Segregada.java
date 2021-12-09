@@ -1,4 +1,5 @@
 package Model;
 
-public class Segregada {
+public class Segregada extends CuentaEbury {
+    private CuentaBanco cuentaReferencia;
 }
