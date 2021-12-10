@@ -2,7 +2,7 @@ package Model;
 
 import java.sql.Date;
 
-public class CuentaEbury {
+public abstract class CuentaEbury {
     private String id;
     private String numeroCuenta;
     private Enum<TipoEstadoCuenta> estadoCuenta;

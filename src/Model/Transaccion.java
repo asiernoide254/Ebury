@@ -2,7 +2,7 @@ package Model;
 
 import java.sql.Date;
 
-public class Transaccion {
+public abstract class Transaccion {
     private String id;
     private Date fechaInstruccion;
     private Date fechaEjecucion;

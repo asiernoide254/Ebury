@@ -2,7 +2,7 @@ package Model;
 
 import java.sql.Date;
 
-public class Cliente {
+public abstract class Cliente {
     private String id;
     private String numeroIdentificacion;
     private Enum<TipoEstadoCliente> estado;
