@@ -5,6 +5,8 @@ public class Pago extends Transaccion {
     private double cantidad;
 
     private Beneficiario beneficiario;
-    /**Puede tener 1 o 0 cambios de divisa*/
+    /**
+     * Puede tener 1 o 0 cambios de divisa
+     */
     private CambioDivisa cambioDivisa;
 }
