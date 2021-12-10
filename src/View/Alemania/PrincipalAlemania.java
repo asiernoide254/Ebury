@@ -15,6 +15,7 @@ public class PrincipalAlemania {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setIconImage(new ImageIcon("Recursos/Ebury.png").getImage());
+        //sus
 
         frame.pack();
         frame.setVisible(true);
