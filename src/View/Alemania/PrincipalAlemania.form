@@ -22,7 +22,7 @@
           <component id="9d5a1" class="javax.swing.JLabel" binding="Imagen">
             <constraints/>
             <properties>
-              <icon value="logometadata.png"/>
+              <icon value="logoBaFin.png"/>
               <text value=""/>
               <verticalAlignment value="1"/>
               <verticalTextPosition value="3"/>
