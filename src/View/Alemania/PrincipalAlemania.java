@@ -31,18 +31,9 @@ public class PrincipalAlemania extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(new ImageIcon("Recursos/Ebury.png").getImage());
 
-        informeInicialButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onInicial();
-            }
-        });
+        informeInicialButton.addActionListener(e -> onInicial());
 
-        informeSemanalButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onSemanal();
-            }
-        });
-
+        informeSemanalButton.addActionListener(e -> onSemanal());
     }
 
     private void onInicial() {
@@ -56,14 +47,6 @@ public class PrincipalAlemania extends JFrame{
     private void onSemanal() {
         // add your code here if necessary
         dispose();
-    }
-
-    public static void main(String[] args) {
-        PrincipalAlemania frame = new PrincipalAlemania("Ebury");
-
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 
 }
