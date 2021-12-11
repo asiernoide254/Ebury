@@ -54,6 +54,7 @@ public class Exito extends JDialog {
     public static void main(String[] args) {
         Exito dialog = new Exito();
         dialog.pack();
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
         System.exit(0);
     }
