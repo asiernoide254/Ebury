@@ -3,8 +3,6 @@ package View.Holanda;
 import Controller.ControllerHolanda;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class PrincipalHolanda extends JFrame {
 

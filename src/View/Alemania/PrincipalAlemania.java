@@ -25,7 +25,7 @@ public class PrincipalAlemania extends JFrame{
     }
     */
 
-    public PrincipalAlemania(String title){
+    public PrincipalAlemania(String title) {
         super(title);
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

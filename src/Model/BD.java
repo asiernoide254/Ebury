@@ -23,7 +23,7 @@ public class BD {
         }
         catch (SQLException ex)
         {
-            throw new Error("Error al Cerrar la Conexión." + ex.getMessage());
+            throw new Error("Error al Cerrar la Conexiï¿½n." + ex.getMessage());
         }
     }
 
@@ -84,12 +84,13 @@ public class BD {
         {
             Statement stmt = con.createStatement();
             stmt.executeUpdate(ins);
-            stmt.close();
+
         }
         catch (SQLException ex)
         {
             throw new Error("Error en el INSERT: " + ins+ ". " + ex.getMessage());
         }
+        stmt.close();
     }
 
     public void Delete(String del)
