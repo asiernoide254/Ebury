@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Exito extends JDialog {
+public class ExitoHolanda extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
 
-    public Exito() {
+    public ExitoHolanda() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -26,7 +26,7 @@ public class Exito extends JDialog {
     }
 
     public static void main(String[] args) {
-        Exito dialog = new Exito();
+        ExitoHolanda dialog = new ExitoHolanda();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);

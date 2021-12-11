@@ -1,9 +1,11 @@
 package View.Alemania;
 
+import Model.BD;
+
 import javax.swing.*;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class PrincipalAlemania extends JFrame{
 
@@ -25,28 +27,62 @@ public class PrincipalAlemania extends JFrame{
     }
     */
 
-    public PrincipalAlemania(String title) {
+    public PrincipalAlemania(String title){
         super(title);
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(new ImageIcon("Recursos/Ebury.png").getImage());
 
-        informeInicialButton.addActionListener(e -> onInicial());
+        informeInicialButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onInicial();
+            }
+        });
 
-        informeSemanalButton.addActionListener(e -> onSemanal());
+        informeSemanalButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onSemanal();
+            }
+        });
+
     }
 
     private void onInicial() {
-        // add your code here
-        Error dialog = new Error();
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+        BD b = null;
+        try {
+            b = new BD();
+            //implementacion boton
+            b.Modify("sentencia SQL");
+        } catch (SQLException e) {
+            ErrorAlemania dialog = new ErrorAlemania();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+            //throw new RuntimeException("Error relacionado con la base de datos");
+        }
     }
 
     private void onSemanal() {
-        // add your code here if necessary
-        dispose();
+        BD b = null;
+        try {
+            b = new BD();
+            //implementacion boton
+            b.Modify("sentencia SQL");
+        } catch (SQLException e) {
+            ErrorAlemania dialog = new ErrorAlemania();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+            //throw new RuntimeException("Error relacionado con la base de datos");
+        }
+    }
+
+    public static void main(String[] args) {
+        PrincipalAlemania frame = new PrincipalAlemania("Ebury");
+
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
 }
