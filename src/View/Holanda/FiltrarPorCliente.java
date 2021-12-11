@@ -7,6 +7,7 @@ public class FiltrarPorCliente {
     private JPanel panel1;
     private JTextField TextField;
     private JScrollPane resultados;
+    private JComboBox comboBox1;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Filtrar por cliente");
