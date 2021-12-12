@@ -3,12 +3,12 @@ package View.Holanda;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class Error extends JDialog {
+public class ErrorHolanda extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
 
-    public Error() {
+    public ErrorHolanda() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -52,7 +52,7 @@ public class Error extends JDialog {
     }
 
     public static void main(String[] args) {
-        Error dialog = new Error();
+        ErrorHolanda dialog = new ErrorHolanda();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);

@@ -1,8 +1,10 @@
 package View.Holanda;
 
+import Controller.ControllerHolanda;
+
 import javax.swing.*;
 
-public class PrincipalHolanda {
+public class PrincipalHolanda extends JFrame {
 
     private JPanel panel1;
     private JPanel botones;
@@ -12,13 +14,15 @@ public class PrincipalHolanda {
     private JPanel imagen;
     private JLabel imagenAFM;
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Ebury");
-        frame.setContentPane(new PrincipalHolanda().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setIconImage(new ImageIcon("Recursos/Ebury.png").getImage());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    public PrincipalHolanda(String title) {
+        super(title);
+        setContentPane(panel1);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIconImage(new ImageIcon("Recursos/Ebury.png").getImage());
+
+        ControllerHolanda controlador = new ControllerHolanda();
+        filtrarPorClienteButton.addActionListener(e -> controlador.onFiltrarPorCliente(this));
+        filtrarPorCuentaBancariaButton.addActionListener(e -> controlador.onFiltrarPorCuenta());
+        comprobarConexionButton.addActionListener(e -> controlador.onComprobarConexion());
     }
 }

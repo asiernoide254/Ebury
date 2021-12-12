@@ -6,13 +6,17 @@ import java.util.List;
 
 public class BD {
     private Connection con;
+    private final String URL = "jdbc:mysql://eburyrequisitos.cobadwnzalab.eu-central-1.rds.amazonaws.com";
+    private final String USER = "grupo12";
+    private final String PSW = "TtkuXmB872ZbygTR";
 
-    public BD (String url, String user, String psw) throws SQLException {
+    //public BD (String url, String user, String psw) throws SQLException {
+    public BD () throws SQLException {
 
         try{
-            con = DriverManager.getConnection(url,user,psw);
+            con = DriverManager.getConnection(URL,USER,PSW);
         }catch(Exception e){
-            throw new Error("Error conectar base de datos");
+            throw new SQLException("Error al conectarse a la base de datos");
         }
     }
     protected void finalize ()
@@ -23,7 +27,7 @@ public class BD {
         }
         catch (SQLException ex)
         {
-            throw new Error("Error al Cerrar la Conexión." + ex.getMessage());
+            throw new Error("Error al Cerrar la ConexiÃ³n." + ex.getMessage());
         }
     }
 
@@ -78,8 +82,7 @@ public class BD {
         return lista;
     }
 
-    public void Insert(String ins)
-    {
+    public void Modify(String ins) throws SQLException {
         try
         {
             Statement stmt = con.createStatement();
@@ -88,35 +91,7 @@ public class BD {
         }
         catch (SQLException ex)
         {
-            throw new Error("Error en el INSERT: " + ins+ ". " + ex.getMessage());
-        }
-    }
-
-    public void Delete(String del)
-    {
-        try
-        {
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate(del);
-            stmt.close();
-        }
-        catch (SQLException ex)
-        {
-            throw new Error("Error en el DELETE: " + del+ ". " + ex.getMessage());
-        }
-    }
-
-    public void Update(String up)
-    {
-        try
-        {
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate(up);
-            stmt.close();
-        }
-        catch (SQLException ex)
-        {
-            throw new Error("Error en el UPDATE: " + up+ ". " + ex.getMessage());
+            throw new SQLException("Error en la sentencia SQL: " + ins+ ". " + ex.getMessage());
         }
     }
 
