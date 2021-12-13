@@ -12,6 +12,7 @@ public class FiltrarPorCliente {
     private JScrollPane resultados;
     private JComboBox comboBox1;
     private JButton volverButton;
+    private JButton buscarButton;
 
     public JPanel getPanel1() {
         return panel1;

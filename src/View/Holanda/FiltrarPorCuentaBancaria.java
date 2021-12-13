@@ -8,9 +8,10 @@ import java.awt.event.ActionListener;
 
 public class FiltrarPorCuentaBancaria {
     private JTextField TextField;
-    private JComboBox comboBox1;
     private JPanel panel1;
     private JButton volverButton;
+    private JComboBox comboBox2;
+    private JButton buscarButton;
 
     public JPanel getPanel1() {
         return panel1;
