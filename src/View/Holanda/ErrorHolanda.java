@@ -56,11 +56,4 @@ public class ErrorHolanda extends JDialog {
         // add your code here if necessary
         dispose();
     }
-
-    public static void main(String[] args) {
-        ErrorHolanda dialog = new ErrorHolanda();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }

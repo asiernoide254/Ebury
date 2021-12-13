@@ -3,18 +3,25 @@ package Controller;
 import Model.BD;
 import View.Holanda.*;
 import javax.swing.*;
+import java.awt.*;
+import java.security.Principal;
 import java.sql.SQLException;
 
 public class ControllerHolanda {
     public void onFiltrarPorCliente(JFrame frame) {
-        frame.setContentPane(new FiltrarPorCliente());
+        FiltrarPorCliente fpc = new FiltrarPorCliente(frame);
+        frame.setContentPane(fpc.getPanel1());
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    public void onFiltrarPorCuenta() {
-
+    public void onFiltrarPorCuenta(JFrame frame) {
+        FiltrarPorCuentaBancaria fpcb = new FiltrarPorCuentaBancaria(frame);
+        frame.setContentPane(fpcb.getPanel1());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
     public void onComprobarConexion() {
@@ -30,6 +37,16 @@ public class ControllerHolanda {
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         }
+    }
+
+    public void onVolver(JFrame frame) {
+        // add your code here
+        frame.dispose();
+
+        PrincipalHolanda ph = new PrincipalHolanda("Ebury");
+        ph.pack();
+        ph.setLocationRelativeTo(null);
+        ph.setVisible(true);
 
     }
 }

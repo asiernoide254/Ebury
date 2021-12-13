@@ -27,11 +27,4 @@ public class ExitoHolanda extends JDialog {
         // add your code here
         dispose();
     }
-
-    public static void main(String[] args) {
-        ExitoHolanda dialog = new ExitoHolanda();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }

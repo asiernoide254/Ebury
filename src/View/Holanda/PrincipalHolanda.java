@@ -22,7 +22,7 @@ public class PrincipalHolanda extends JFrame {
 
         ControllerHolanda controlador = new ControllerHolanda();
         filtrarPorClienteButton.addActionListener(e -> controlador.onFiltrarPorCliente(this));
-        filtrarPorCuentaBancariaButton.addActionListener(e -> controlador.onFiltrarPorCuenta());
+        filtrarPorCuentaBancariaButton.addActionListener(e -> controlador.onFiltrarPorCuenta(this));
         comprobarConexionButton.addActionListener(e -> controlador.onComprobarConexion());
     }
 }
