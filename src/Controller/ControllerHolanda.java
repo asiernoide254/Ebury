@@ -3,8 +3,7 @@ package Controller;
 import Model.BD;
 import View.Holanda.*;
 import javax.swing.*;
-import java.awt.*;
-import java.security.Principal;
+import java.util.*;
 import java.sql.SQLException;
 
 public class ControllerHolanda {
@@ -50,15 +49,41 @@ public class ControllerHolanda {
 
     }
 
-    public void onBuscarCuentaBancaria(String str, String text) {
-        switch (str){
-            case "Todas":
-                break;
+    public void onBuscarCuentaBancaria(String str, String text, JScrollPane panelRes, JFrame frame) {
+        try {
+            System.out.println("BD cargada");
+            BD myBD = new BD();
+            List<Object[]> resultado;
 
-            case "Cuentas activas":
-                break;
+            switch (str) {
+                case "Todas":
+                    System.out.println("Caso todas");
+                    resultado = myBD.Select("SELECT * FROM CuentaEbury;");
+                    break;
+                case "Cuentas activas":
+                    System.out.println("Caso activas");
+                    resultado = myBD.Select("SELECT * FROM CuentaEbury WHERE estadoCuenta = 'Activa';");
+                    break;
+                default:
+                    System.out.println("Caso cerrada");
+                    resultado = myBD.Select("SELECT * FROM CuentaEbury WHERE estadoCuenta = 'Cerrada';");
+            }
 
-            default:
+            for (Object[] tupla : resultado) {
+                JPanel bruh = new JPanel();
+                bruh.add(new JLabel("HOLA"));
+                panelRes.add(bruh);
+                System.out.println("tupla añadida");
+                bruh.setVisible(true);
+            }
+
+            frame.pack();
+
+        } catch (SQLException e) {
+            ErrorHolanda dialog = new ErrorHolanda();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
         }
     }
 
