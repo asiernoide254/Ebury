@@ -1,4 +1,5 @@
-import View.Alemania.*;
+import View.Alemania.PrincipalAlemania;
+
 import javax.swing.*;
 
 public class mainAlemania {

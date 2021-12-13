@@ -1,5 +1,7 @@
 package View.Holanda;
 
+import Controller.ControllerHolanda;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -18,7 +20,7 @@ public class ErrorHolanda extends JDialog {
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onOK();
+                onReintentar();
             }
         });
 
@@ -44,9 +46,10 @@ public class ErrorHolanda extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onOK() {
+    private void onReintentar() {
         // add your code here
         dispose();
+        new ControllerHolanda().onComprobarConexion();
     }
 
     private void onCancel() {

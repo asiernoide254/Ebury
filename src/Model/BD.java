@@ -6,7 +6,7 @@ import java.util.List;
 
 public class BD {
     private Connection con;
-    private final String URL = "jdbc:mysql://eburyrequisitos.cobadwnzalab.eu-central-1.rds.amazonaws.com";
+    private final String URL = "jdbc:mysql://eburyrequisitos.cobadwnzalab.eu-central-1.rds.amazonaws.com/grupo12DB";
     private final String USER = "grupo12";
     private final String PSW = "TtkuXmB872ZbygTR";
 

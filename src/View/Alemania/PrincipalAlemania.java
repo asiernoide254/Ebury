@@ -1,5 +1,7 @@
 package View.Alemania;
 
+import Controller.ControllerAlemania;
+import Controller.ControllerHolanda;
 import Model.BD;
 
 import javax.swing.*;
@@ -33,56 +35,11 @@ public class PrincipalAlemania extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(new ImageIcon("resources/Ebury.png").getImage());
 
-        informeInicialButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onInicial();
-            }
-        });
-
-        informeSemanalButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onSemanal();
-            }
-        });
-
+        ControllerAlemania controlador = new ControllerAlemania();
+        informeInicialButton.addActionListener(e -> controlador.onInicial());
+        informeSemanalButton.addActionListener(e -> controlador.onSemanal());
     }
 
-    private void onInicial() {
-        BD b = null;
-        try {
-            b = new BD();
-            //implementacion boton
-            b.Modify("sentencia SQL");
-        } catch (SQLException e) {
-            ErrorAlemania dialog = new ErrorAlemania();
-            dialog.pack();
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
-            //throw new RuntimeException("Error relacionado con la base de datos");
-        }
-    }
 
-    private void onSemanal() {
-        BD b = null;
-        try {
-            b = new BD();
-            //implementacion boton
-            b.Modify("sentencia SQL");
-        } catch (SQLException e) {
-            ErrorAlemania dialog = new ErrorAlemania();
-            dialog.pack();
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
-            //throw new RuntimeException("Error relacionado con la base de datos");
-        }
-    }
-
-    public static void main(String[] args) {
-        PrincipalAlemania frame = new PrincipalAlemania("Ebury");
-
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
 
 }
