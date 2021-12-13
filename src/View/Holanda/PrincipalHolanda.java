@@ -18,7 +18,7 @@ public class PrincipalHolanda extends JFrame {
         super(title);
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setIconImage(new ImageIcon("Recursos/Ebury.png").getImage());
+        setIconImage(new ImageIcon("resources/Ebury.png").getImage());
 
         ControllerHolanda controlador = new ControllerHolanda();
         filtrarPorClienteButton.addActionListener(e -> controlador.onFiltrarPorCliente(this));

@@ -10,16 +10,10 @@ public class BD {
     private final String USER = "grupo12";
     private final String PSW = "TtkuXmB872ZbygTR";
 
-    //public BD (String url, String user, String psw) throws SQLException {
     public BD () throws SQLException {
-
-        try{
-            con = DriverManager.getConnection(URL,USER,PSW);
-        }catch(Exception e){
-            throw new SQLException("Error al conectarse a la base de datos");
-        }
+        con = DriverManager.getConnection(URL,USER,PSW);
     }
-    protected void finalize ()
+    protected void finalize () throws Throwable
     {
         try
         {
@@ -76,12 +70,13 @@ public class BD {
         }
         catch (SQLException ex)
         {
-            throw new Error("Error en el SELECT: " + sel+ ". "+ex.getMessage() );
+            throw new Error("Error en el SELECT: " + sel + ". " + ex.getMessage() );
         }
 
         return lista;
     }
 
+    //Modify() incluye Insert, Update y Delete
     public void Modify(String ins) throws SQLException {
         try
         {

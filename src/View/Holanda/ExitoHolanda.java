@@ -12,6 +12,9 @@ public class ExitoHolanda extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        setTitle("Exito");
+        setIconImage(new ImageIcon("resources/Ebury.png").getImage());
+        setResizable(false);
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

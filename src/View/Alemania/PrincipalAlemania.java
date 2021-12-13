@@ -31,7 +31,7 @@ public class PrincipalAlemania extends JFrame{
         super(title);
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setIconImage(new ImageIcon("Recursos/Ebury.png").getImage());
+        setIconImage(new ImageIcon("resources/Ebury.png").getImage());
 
         informeInicialButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
