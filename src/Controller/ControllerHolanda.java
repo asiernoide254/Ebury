@@ -49,4 +49,36 @@ public class ControllerHolanda {
         ph.setVisible(true);
 
     }
+
+    public void onBuscarCuentaBancaria(String str, String text) {
+        switch (str){
+            case "Todas":
+                break;
+
+            case "Cuentas activas":
+                break;
+
+            default:
+        }
+    }
+
+    public void onBuscarCliente(String str, String text) {
+
+        switch(str){
+            case "Nombre": //lo que haya que hacer
+                break;
+
+            case "Apellidos":
+                break;
+
+            case "Fecha de inicio":
+                break;
+
+            case "Fecha de cierre":
+                break;
+
+            default:
+        }
+
+    }
 }

@@ -20,6 +20,7 @@ public class FiltrarPorCliente {
 
     public FiltrarPorCliente(JFrame frame) {
         ControllerHolanda controlador = new ControllerHolanda();
-        volverButton.addActionListener((ActionListener) e -> controlador.onVolver(frame));
+        volverButton.addActionListener(e -> controlador.onVolver(frame));
+        buscarButton.addActionListener(e -> controlador.onBuscarCliente(comboBox1.getSelectedItem().toString(), TextField.getText()));
     }
 }

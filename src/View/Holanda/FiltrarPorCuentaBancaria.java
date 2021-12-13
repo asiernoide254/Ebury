@@ -19,7 +19,8 @@ public class FiltrarPorCuentaBancaria {
 
     public FiltrarPorCuentaBancaria(JFrame frame) {
         ControllerHolanda controlador = new ControllerHolanda();
-        volverButton.addActionListener((ActionListener) e -> controlador.onVolver(frame));
+        volverButton.addActionListener(e -> controlador.onVolver(frame));
+        buscarButton.addActionListener(e -> controlador.onBuscarCuentaBancaria(comboBox2.getSelectedItem().toString(), TextField.getText()));
     }
 
 }
