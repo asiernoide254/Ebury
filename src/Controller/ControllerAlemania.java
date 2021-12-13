@@ -2,6 +2,7 @@ package Controller;
 
 import Model.BD;
 import View.Alemania.ErrorAlemania;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -15,9 +16,10 @@ public class ControllerAlemania {
 
     public void onInicial() {
         try {
-            BD b = new BD();
+            BD myBD = new BD();
             //implementacion boton
-            b.Modify("sentencia SQL");
+            List<Object[]> resultado = myBD.Select("SELECT * FROM CuentaBanco;");
+            crearFicheroCSV(resultado);
         } catch (SQLException e) {
             ErrorAlemania dialog = new ErrorAlemania();
             dialog.pack();
@@ -31,11 +33,7 @@ public class ControllerAlemania {
             BD myBD = new BD();
             //implementacion boton
             List<Object[]> resultado = myBD.Select("SELECT * FROM CuentaBanco;");
-
-            Date fecha = new Date();
-            SimpleDateFormat sd = new SimpleDateFormat("ddMMyyyyHHmmss");
-            crearFicheroCSV("Ebury_IBAN_" + sd.format(fecha), resultado);
-
+            crearFicheroCSV(resultado);
         } catch (SQLException e) {
             ErrorAlemania dialog = new ErrorAlemania();
             dialog.pack();
@@ -44,10 +42,15 @@ public class ControllerAlemania {
         }
     }
 
-    private void crearFicheroCSV(String nFichero, List<Object[]> resultado) {
+    private void crearFicheroCSV(List<Object[]> resultado) {
+        //Generar nombre de archivo
+        Date fecha = new Date();
+        SimpleDateFormat sd = new SimpleDateFormat("ddMMyyyyHHmmss");
+        String nFichero = "Ebury_IBAN_" + sd.format(fecha);
+
+        //Generar archivo CSV
         File fd = new File(nFichero);
         try (PrintWriter pw = new PrintWriter(fd)) {
-
             //Printear en pw lo que quieras en el archivo
             for (Object[] tupla : resultado) {
                 StringJoiner sj = new StringJoiner(",");
