@@ -5,15 +5,12 @@ import java.awt.event.*;
 
 public class ExitoAlemania extends JDialog {
     private JPanel contentPane;
-    private JButton buttonOK;
     private JButton buttonCancel;
 
     public ExitoAlemania() {
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
-
-        buttonOK.addActionListener(e -> onOK());
+        setIconImage(new ImageIcon("resources/Ebury.png").getImage());
 
         buttonCancel.addActionListener(e -> onCancel());
 
@@ -26,28 +23,11 @@ public class ExitoAlemania extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
-
-    private void onOK() {
-        // add your code here
-        dispose();
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onCancel() {
         // add your code here if necessary
         dispose();
-    }
-
-    public static void main(String[] args) {
-        ExitoAlemania dialog = new ExitoAlemania();
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-        System.exit(0);
     }
 }

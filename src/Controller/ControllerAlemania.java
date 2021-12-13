@@ -2,6 +2,7 @@ package Controller;
 
 import Model.BD;
 import View.Alemania.ErrorAlemania;
+import View.Alemania.ExitoAlemania;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -61,9 +62,9 @@ public class ControllerAlemania {
             BD myBD = new BD();
             //implementacion boton
             //Lista con todas las empresas
-            List<Object[]> resultado = myBD.Select(EMP + " AND c.estado = 'Activo';");
+            List<Object[]> resultado = myBD.Select(EMP + " AND ce.estadoCuenta = 'Activa';");
             //Añado la lista con todos los individuos a la de empresas
-            resultado.addAll(myBD.Select(IND + " AND c.estado = 'Activo';"));
+            resultado.addAll(myBD.Select(IND + " AND ce.estadoCuenta = 'Activa';"));
             crearFicheroCSV(resultado);
         } catch (SQLException e) {
             ErrorAlemania dialog = new ErrorAlemania();
@@ -94,6 +95,12 @@ public class ControllerAlemania {
                 }
                 pw.println(sj);
             }
+
+            //Enseñar dialogo de exito
+            ExitoAlemania dialog = new ExitoAlemania();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
 
         } catch (Exception e) {
             System.err.println("ERROR: " + e.getMessage());
