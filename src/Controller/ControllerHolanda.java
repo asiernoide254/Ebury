@@ -1,10 +1,7 @@
 package Controller;
 
 import Model.BD;
-import View.Holanda.ErrorHolanda;
-import View.Holanda.ExitoHolanda;
-import View.Holanda.FiltrarPorCliente;
-
+import View.Holanda.*;
 import javax.swing.*;
 import java.sql.SQLException;
 
@@ -33,7 +30,6 @@ public class ControllerHolanda {
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         }
-
 
     }
 }
