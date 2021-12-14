@@ -21,7 +21,7 @@ public class ControllerAlemania {
                     "(SELECT id, cuentaReferencia FROM Dedicada) s ON s.id = ce.id " +
                     "JOIN Direccion d ON d.cliente = c.id " +
                     "JOIN CuentaBanco cb ON s.cuentaReferencia = cb.ibanCuenta " +
-                    "WHERE cb.pais = 'Alemania' AND d.valida = 1 AND YEAR(CURDATE()) - YEAR(ce.fechaCierre) <= 5";
+                    "WHERE cb.pais = 'Alemania' AND d.valida = 1 AND (YEAR(CURDATE()) - YEAR(ce.fechaCierre) <= 5 OR ce.fechaCierre IS NULL)";
     private final String IND =
             "SELECT s.cuentaReferencia, concat(p.apellido, COALESCE(concat(' ', p.segundoApellido), '')) 'apellidos', concat(p.nombre, COALESCE(concat(' ', p.segundoNombre), '')) 'nombre', d.calle, d.ciudad, d.codigoPostal, d.pais, c.numeroIdentificacion, p.fechaNacimiento FROM Individual i JOIN Persona p ON p.id = i.persona " +
                     "JOIN Cliente c ON c.id = i.cliente " +
@@ -30,7 +30,7 @@ public class ControllerAlemania {
                     "JOIN " +
                     "(SELECT id, cuentaReferencia FROM Dedicada) s ON s.id = ce.id " +
                     "JOIN CuentaBanco cb ON cb.ibanCuenta = s.cuentaReferencia " +
-                    "WHERE cb.pais = 'Alemania' AND d.valida = 1 AND YEAR(CURDATE()) - YEAR(ce.fechaCierre) <= 5";
+                    "WHERE cb.pais = 'Alemania' AND d.valida = 1 AND (YEAR(CURDATE()) - YEAR(ce.fechaCierre) <= 5 OR ce.fechaCierre IS NULL)";
 
     public void onInicial() {
         try {
