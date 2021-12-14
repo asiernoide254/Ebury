@@ -51,12 +51,13 @@ public class ControllerHolanda {
     }
 
     public void onBuscarCuentaBancaria(String str, String text, JTable tabla) {
-        final String IND = "SELECT SD.cuentaReferencia 'IBAN', concat(P.apellido, ' ', COALESCE(P.segundoApellido, '')) 'apellidos', concat(P.nombre, ' ', COALESCE(P.segundoNombre, '')) 'nombre', D.calle, D.ciudad, D.codigoPostal, D.pais, C.numeroIdentificacion, P.fechaNacimiento, CE.fechaApertura, CE.fechaCierre " +
+        final String IND = "SELECT C.id, SD.cuentaReferencia 'IBAN', concat(P.apellido, ' ', COALESCE(P.segundoApellido, '')) 'apellidos', " +
+                "concat(P.nombre, ' ', COALESCE(P.segundoNombre, '')) 'nombre', D.calle, D.ciudad, D.codigoPostal, D.pais, C.numeroIdentificacion, P.fechaNacimiento, CE.fechaApertura, CE.fechaCierre, CE.estadoCuenta " +
                 "FROM CuentaEbury CE, Cliente C, Individual I, Persona P, Direccion D, (SELECT * FROM Segregada UNION SELECT * FROM Dedicada) SD, CuentaBanco CB " +
                 "WHERE " +
                 "CE.id = SD.id AND C.id = CE.propietario AND D.cliente = C.id AND D.valida = 1 AND " +
                 "C.id = I.cliente AND I.persona = P.id AND SD.cuentaReferencia = CB.ibanCuenta AND CB.pais = 'Holanda' AND (YEAR(CURDATE()) - YEAR(CE.fechaCierre) <= 3 OR CE.fechaCierre IS NULL) AND CB.ibanCuenta LIKE '%" + text + "%'";
-        final String EMP = "SELECT SD.cuentaReferencia 'IBAN', null, E.nombre, D.calle, D.ciudad, D.codigoPostal, D.pais, C.numeroIdentificacion, E.fechaRegistro, CE.fechaApertura, CE.fechaCierre " +
+        final String EMP = "SELECT C.id, SD.cuentaReferencia 'IBAN', null, E.nombre, D.calle, D.ciudad, D.codigoPostal, D.pais, C.numeroIdentificacion, E.fechaRegistro, CE.fechaApertura, CE.fechaCierre, CE.estadoCuenta " +
                 "FROM CuentaEbury CE, Cliente C, Empresa E, Direccion D, (SELECT * FROM Segregada UNION SELECT * FROM Dedicada) SD, CuentaBanco CB " +
                 "WHERE " +
                 "CE.id = SD.id AND C.id = CE.propietario AND D.cliente = C.id AND D.valida = 1 AND " +
@@ -84,7 +85,7 @@ public class ControllerHolanda {
                     resultado.addAll(myBD.Select(EMP + " AND (CE.estadoCuenta = 'Cerrada' OR CE.estadoCuenta = 'Bloqueada');"));
                 }
             }
-            rellenarTabla(tabla, resultado);
+            rellenarTabla(tabla, resultado, myBD);
 
         } catch (SQLException e) {
             ErrorHolanda dialog = new ErrorHolanda();
@@ -94,31 +95,46 @@ public class ControllerHolanda {
         }
     }
 
-    private void rellenarTabla(JTable tabla, List<Object[]> resultado) {
-        String[] nombreColumnas = {"IBAN", "Apellido", "Nombre", "Calle", "Ciudad", "CP", "País", "NIF", "Fecha de Nacimiento/Registro", "Fecha de Apertura", "Fecha de cierre"};
+    private void rellenarTabla(JTable tabla, List<Object[]> resultado, BD myBD) {
+        String[] nombreColumnas = {"IBAN", "Apellido", "Nombre", "Calle", "Ciudad", "CP", "País", "NIF", "Fecha de Nacimiento/Registro", "Fecha de Apertura", "Fecha de cierre", "Activa", "Personas relacionadas"};
 
         DefaultTableModel dtm = new DefaultTableModel(0, 0);
         dtm.setColumnIdentifiers(nombreColumnas);
         tabla.setModel(dtm);
 
         for(Object[] tupla : resultado) {
-            System.out.println(Arrays.toString(tupla));
-            for (int i = 0; i < tupla.length; i++) {
-                if (tupla[i] == null) {
-                    tupla[i] = "No Existente";
+            List<Object[]> personasRelacionadas = myBD.Select(
+                    "SELECT c2.numeroIdentificacion FROM PersonaRelacionada PR, Cliente c2, Cliente C " +
+                            "WHERE PR.cliente = c2.id AND PR.clienteRelacionado = C.id AND " +
+                            "C.id = " + Integer.parseInt(tupla[0].toString()) + " AND PR.tipoClienteRelacionado = 'Autorizado';"
+            );
+
+            StringJoiner ps = new StringJoiner("\n");
+            for (Object[] nombre : personasRelacionadas) {
+                ps.add((String)nombre[0]);
+            }
+            tupla = Arrays.copyOf(tupla, tupla.length + 1);
+            tupla[tupla.length - 1] = ps;
+
+            //Borramos la columna id de tupla
+            Object[] tuplaDefinitiva = Arrays.copyOfRange(tupla, 1, tupla.length);
+            System.out.println(Arrays.toString(tuplaDefinitiva));
+            for (int i = 0; i < tuplaDefinitiva.length; i++) {
+                if (tuplaDefinitiva[i] == null) {
+                    tuplaDefinitiva[i] = "No Existente";
                 }
             }
-            dtm.addRow(tupla);
+            dtm.addRow(tuplaDefinitiva);
         }
     }
 
     public void onBuscarCliente(String str, String text, JTable table) {
-        final String IND = "SELECT SD.cuentaReferencia 'IBAN', concat(P.apellido, ' ', COALESCE(P.segundoApellido, '')) 'apellidos', concat(P.nombre, ' ', COALESCE(P.segundoNombre, '')) 'nombre', D.calle, D.ciudad, D.codigoPostal, D.pais, C.numeroIdentificacion, P.fechaNacimiento, CE.fechaApertura, CE.fechaCierre " +
+        final String IND = "SELECT SD.cuentaReferencia 'IBAN', concat(P.apellido, ' ', COALESCE(P.segundoApellido, '')) 'apellidos', concat(P.nombre, ' ', COALESCE(P.segundoNombre, '')) 'nombre', D.calle, D.ciudad, D.codigoPostal, D.pais, C.numeroIdentificacion, P.fechaNacimiento, CE.fechaApertura, CE.fechaCierre, CE.estadoCuenta " +
                 "FROM CuentaEbury CE, Cliente C, Individual I, Persona P, Direccion D, (SELECT * FROM Segregada UNION SELECT * FROM Dedicada) SD, CuentaBanco CB " +
                 "WHERE " +
                 "CE.id = SD.id AND C.id = CE.propietario AND D.cliente = C.id AND D.valida = 1 AND " +
                 "C.id = I.cliente AND I.persona = P.id AND SD.cuentaReferencia = CB.ibanCuenta AND CB.pais = 'Holanda' AND (YEAR(CURDATE()) - YEAR(CE.fechaCierre) <= 3 OR CE.fechaCierre IS NULL)";
-        final String EMP = "SELECT SD.cuentaReferencia 'IBAN', null, E.nombre, D.calle, D.ciudad, D.codigoPostal, D.pais, C.numeroIdentificacion, E.fechaRegistro, CE.fechaApertura, CE.fechaCierre " +
+        final String EMP = "SELECT SD.cuentaReferencia 'IBAN', null, E.nombre, D.calle, D.ciudad, D.codigoPostal, D.pais, C.numeroIdentificacion, E.fechaRegistro, CE.fechaApertura, CE.fechaCierre, CE.estadoCuenta " +
                 "FROM CuentaEbury CE, Cliente C, Empresa E, Direccion D, (SELECT * FROM Segregada UNION SELECT * FROM Dedicada) SD, CuentaBanco CB " +
                 "WHERE " +
                 "CE.id = SD.id AND C.id = CE.propietario AND D.cliente = C.id AND D.valida = 1 AND " +
@@ -156,7 +172,7 @@ public class ControllerHolanda {
                     resultado.addAll(myBD.Select(EMP + " AND D.calle LIKE '%" + text + "%';"));
                 }
             }
-            rellenarTabla(table, resultado);
+            rellenarTabla(table, resultado, myBD);
         } catch (Exception e) {
             ErrorHolanda dialog = new ErrorHolanda();
             dialog.pack();
