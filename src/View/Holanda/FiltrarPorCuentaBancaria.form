@@ -37,7 +37,11 @@
             <children>
               <component id="4e81" class="javax.swing.JTable" binding="table1" default-binding="true">
                 <constraints/>
-                <properties/>
+                <properties>
+                  <enabled value="false"/>
+                  <rowSelectionAllowed value="false"/>
+                  <updateSelectionOnSort value="false"/>
+                </properties>
               </component>
             </children>
           </scrollpane>
