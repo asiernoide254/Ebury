@@ -18,11 +18,7 @@ public class ControllerAlemania {
                     "JOIN Cliente c ON  e.cliente=c.id " +
                     "JOIN CuentaEbury ce ON ce.propietario=c.id " +
                     "JOIN " +
-                    "(SELECT id, cuentaReferencia FROM Segregada " +
-                    "UNION " +
-                    "SELECT id, cuentaReferencia FROM Dedicada " +
-                    "UNION " +
-                    "SELECT id, cuentaReferencia FROM Pooled) s ON s.id = ce.id " +
+                    "(SELECT id, cuentaReferencia FROM Dedicada) s ON s.id = ce.id " +
                     "JOIN Direccion d ON d.cliente = c.id " +
                     "JOIN CuentaBanco cb ON s.cuentaReferencia = cb.ibanCuenta " +
                     "WHERE cb.pais = 'Alemania' AND d.valida = 1";
@@ -32,11 +28,7 @@ public class ControllerAlemania {
                     "JOIN Direccion d ON d.cliente = c.id " +
                     "JOIN CuentaEbury ce ON ce.propietario = c.id " +
                     "JOIN " +
-                    "(SELECT id, cuentaReferencia FROM Segregada " +
-                    "UNION " +
-                    "SELECT id, cuentaReferencia FROM Dedicada " +
-                    "UNION " +
-                    "SELECT id, cuentaReferencia FROM Pooled) s ON s.id = ce.id " +
+                    "(SELECT id, cuentaReferencia FROM Dedicada) s ON s.id = ce.id " +
                     "JOIN CuentaBanco cb ON cb.ibanCuenta = s.cuentaReferencia " +
                     "WHERE cb.pais = 'Alemania' AND d.valida = 1";
 
