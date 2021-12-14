@@ -14,23 +14,23 @@ import java.util.StringJoiner;
 
 public class ControllerAlemania {
     private final String EMP =
-            "SELECT s.cuentaReferencia, null, e.nombre, d.calle, d.ciudad, d.codigoPostal, d.pais, e.cliente, ce.fechaApertura FROM Empresa e " +
-                    "JOIN Cliente c ON  e.cliente=c.id " +
-                    "JOIN CuentaEbury ce ON ce.propietario=c.id " +
+            "SELECT s.cuentaReferencia, null, e.nombre, d.calle, d.ciudad, d.codigoPostal, d.pais, c.numeroIdentificacion, e.fechaRegistro FROM Empresa e " +
+                    "JOIN Cliente c ON  e.cliente = c.id " +
+                    "JOIN CuentaEbury ce ON ce.propietario = c.id " +
                     "JOIN " +
                     "(SELECT id, cuentaReferencia FROM Dedicada) s ON s.id = ce.id " +
                     "JOIN Direccion d ON d.cliente = c.id " +
                     "JOIN CuentaBanco cb ON s.cuentaReferencia = cb.ibanCuenta " +
-                    "WHERE cb.pais = 'Alemania' AND d.valida = 1";
+                    "WHERE cb.pais = 'Alemania' AND d.valida = 1 AND YEAR(CURDATE()) - YEAR(ce.fechaCierre) <= 5";
     private final String IND =
-            "SELECT s.cuentaReferencia, concat(p.apellido, ' ', COALESCE(p.segundoApellido, '')) 'apellidos', concat(p.nombre, ' ', COALESCE(p.segundoNombre, '')) 'nombre', d.calle, d.ciudad, d.codigoPostal, d.pais, i.cliente , p.fechaNacimiento FROM Individual i JOIN Persona p ON p.id = i.persona " +
+            "SELECT s.cuentaReferencia, concat(p.apellido, COALESCE(concat(' ', p.segundoApellido), '')) 'apellidos', concat(p.nombre, COALESCE(concat(' ', p.segundoNombre), '')) 'nombre', d.calle, d.ciudad, d.codigoPostal, d.pais, c.numeroIdentificacion, p.fechaNacimiento FROM Individual i JOIN Persona p ON p.id = i.persona " +
                     "JOIN Cliente c ON c.id = i.cliente " +
                     "JOIN Direccion d ON d.cliente = c.id " +
                     "JOIN CuentaEbury ce ON ce.propietario = c.id " +
                     "JOIN " +
                     "(SELECT id, cuentaReferencia FROM Dedicada) s ON s.id = ce.id " +
                     "JOIN CuentaBanco cb ON cb.ibanCuenta = s.cuentaReferencia " +
-                    "WHERE cb.pais = 'Alemania' AND d.valida = 1";
+                    "WHERE cb.pais = 'Alemania' AND d.valida = 1 AND YEAR(CURDATE()) - YEAR(ce.fechaCierre) <= 5";
 
     public void onInicial() {
         try {
