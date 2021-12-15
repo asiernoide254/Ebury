@@ -2,7 +2,6 @@ package Controller;
 
 import Model.*;
 import View.Holanda.*;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.swing.*;
@@ -193,7 +192,6 @@ public class ControllerHolanda {
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         }
-
     }
 
     public void onDescargarResultadosCliente(JTable table) {
@@ -233,6 +231,11 @@ public class ControllerHolanda {
         File fichero = new File(nombreFichero);
         try(PrintWriter pw = new PrintWriter(fichero)) {
             pw.print(contenido);
+
+            ExitoDescargaHolanda dialog = new ExitoDescargaHolanda();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
         } catch (FileNotFoundException e) {
             System.err.println("No se ha podido generar el fichero.");
         }
