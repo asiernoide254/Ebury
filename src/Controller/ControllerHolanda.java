@@ -2,8 +2,15 @@ package Controller;
 
 import Model.*;
 import View.Holanda.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.SQLException;
 
@@ -187,5 +194,47 @@ public class ControllerHolanda {
             dialog.setVisible(true);
         }
 
+    }
+
+    public void onDescargarResultadosCliente(JTable table) {
+        List<InformeCliente> informes = new ArrayList<>();
+        for(int i = 0; i < table.getRowCount(); i++) {
+            InformeCliente informe = new InformeCliente(table.getValueAt(i, 0).toString(), table.getValueAt(i, 1).toString(), table.getValueAt(i, 2).toString(),
+                    table.getValueAt(i, 3).toString(), table.getValueAt(i, 4).toString(), table.getValueAt(i, 5).toString(),
+                    table.getValueAt(i, 6).toString(), table.getValueAt(i, 7).toString(), table.getValueAt(i, 8).toString(),
+                    table.getValueAt(i, 9).toString(), table.getValueAt(i, 10).toString(),table.getValueAt(i, 11).toString(),
+                    table.getValueAt(i, 12).toString());
+            informes.add(informe);
+        }
+        String resultado = new GsonBuilder().setPrettyPrinting().create().toJson(informes);
+        Date fecha = new Date();
+        SimpleDateFormat sd = new SimpleDateFormat("ddMMyyyyHHmmss");
+        String nFichero = "Ebury_Cliente_" + sd.format(fecha) + ".json";
+        generarJson(nFichero, resultado);
+    }
+
+    public void onDescargarResultadosCuentaBancaria(JTable table) {
+        List<InformeCuentaBancaria> informes = new ArrayList<>();
+        for(int i = 0; i < table.getRowCount(); i++) {
+            InformeCuentaBancaria informe = new InformeCuentaBancaria(table.getValueAt(i, 0).toString(), table.getValueAt(i, 1).toString(), table.getValueAt(i, 2).toString(),
+                    table.getValueAt(i, 3).toString(), table.getValueAt(i, 4).toString(), table.getValueAt(i, 5).toString(),
+                    table.getValueAt(i, 6).toString(), table.getValueAt(i, 7).toString(), table.getValueAt(i, 8).toString(),
+                    table.getValueAt(i, 9).toString(), table.getValueAt(i, 10).toString(),table.getValueAt(i, 11).toString());
+            informes.add(informe);
+        }
+        String resultado = new GsonBuilder().setPrettyPrinting().create().toJson(informes);
+        Date fecha = new Date();
+        SimpleDateFormat sd = new SimpleDateFormat("ddMMyyyyHHmmss");
+        String nFichero = "Ebury_CuentaBancaria_" + sd.format(fecha) + ".json";
+        generarJson(nFichero, resultado);
+    }
+
+    private void generarJson(String nombreFichero, String contenido) {
+        File fichero = new File(nombreFichero);
+        try(PrintWriter pw = new PrintWriter(fichero)) {
+            pw.print(contenido);
+        } catch (FileNotFoundException e) {
+            System.err.println("No se ha podido generar el fichero.");
+        }
     }
 }

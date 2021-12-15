@@ -14,6 +14,7 @@ public class FiltrarPorCliente {
     private JComboBox comboBox1;
     private JButton volverButton;
     private JButton buscarButton;
+    private JButton descargarResultados;
     private JTable table1;
 
     public JPanel getPanel1() {
@@ -25,5 +26,6 @@ public class FiltrarPorCliente {
         volverButton.addActionListener(e -> controlador.onVolver(frame));
         buscarButton.addActionListener(e -> controlador.onBuscarCliente(comboBox1.getSelectedItem().toString(), TextField.getText(), table1));
         panel1.registerKeyboardAction(e -> controlador.onBuscarCliente(comboBox1.getSelectedItem().toString(), TextField.getText(), table1), KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        descargarResultados.addActionListener(e -> controlador.onDescargarResultadosCliente(table1));
     }
 }

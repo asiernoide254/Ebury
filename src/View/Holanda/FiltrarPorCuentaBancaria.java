@@ -13,6 +13,7 @@ public class FiltrarPorCuentaBancaria {
     private JButton volverButton;
     private JComboBox comboBox2;
     private JButton buscarButton;
+    private JButton descargarResultados;
     private JScrollPane panelRes;
     private JTable table1;
 
@@ -25,5 +26,6 @@ public class FiltrarPorCuentaBancaria {
         volverButton.addActionListener(e -> controlador.onVolver(frame));
         buscarButton.addActionListener(e -> controlador.onBuscarCuentaBancaria(comboBox2.getSelectedItem().toString(), TextField.getText(), table1));
         panel1.registerKeyboardAction(e -> controlador.onBuscarCuentaBancaria(comboBox2.getSelectedItem().toString(), TextField.getText(), table1), KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        descargarResultados.addActionListener(e -> controlador.onDescargarResultadosCuentaBancaria(table1));
     }
 }

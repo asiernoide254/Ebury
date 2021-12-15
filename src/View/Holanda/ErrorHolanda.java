@@ -9,6 +9,7 @@ public class ErrorHolanda extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JLabel Mensaje;
 
     public ErrorHolanda() {
         setContentPane(contentPane);

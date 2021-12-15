@@ -1,8 +1,7 @@
 package Controller;
 
-import Model.BD;
-import View.Alemania.ErrorAlemania;
-import View.Alemania.ExitoAlemania;
+import Model.*;
+import View.Alemania.*;
 
 import java.io.File;
 import java.io.PrintWriter;
