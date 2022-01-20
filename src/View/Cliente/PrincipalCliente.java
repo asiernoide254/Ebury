@@ -17,6 +17,6 @@ public class PrincipalCliente extends JFrame {
         setIconImage(new ImageIcon("resources/Ebury.png").getImage());
 
         ControllerCliente controlador = new ControllerCliente();
-        Registrarse.addActionListener(e -> controlador.onRegistrarse());
+        Registrarse.addActionListener(e -> controlador.onCargarRegistroPrincipal(this));
     }
 }

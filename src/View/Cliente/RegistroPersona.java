@@ -8,21 +8,21 @@ import javax.swing.*;
 public class RegistroPersona extends JFrame {
     private JPanel panel1;
     private JLabel DatosP;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JTextField textField4;
-    private JTextField textField5;
+    private JTextField tNIF;
+    private JTextField tPrimerNombre;
+    private JTextField tPrimerApellido;
+    private JTextField tSegundoNombre;
+    private JTextField tSegundoApellido;
     private JPanel panelCal;
     private JDateChooser JDateChooser1;
-    private JTextField textField6;
-    private JTextField textField7;
-    private JTextField textField8;
-    private JTextField textField9;
-    private JTextField textField10;
-    private JTextField textField11;
-    private JTextField textField12;
-    private JCheckBox válidaDirecciónActualCheckBox;
+    private JTextField tCalle;
+    private JTextField tPlantaPuertaOficina;
+    private JTextField tCiudad;
+    private JTextField tPais;
+    private JTextField tNumero;
+    private JTextField tRegion;
+    private JTextField tCP;
+    private JCheckBox validaDireccionActualCheckBox;
     private JPasswordField passwordField1;
     private JPasswordField passwordField2;
     private JButton registrarseButton;
@@ -36,9 +36,11 @@ public class RegistroPersona extends JFrame {
 
         ControllerCliente controlador = new ControllerCliente();
         registrarseButton.addActionListener(e -> controlador.onCompletarRegistroPersona());
-        cancelarButton.addActionListener(e -> controlador.onCancelarRegistro(this));
-
+        cancelarButton.addActionListener(e -> controlador.onCargarRegistroPrincipal(this));
     }
 
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }

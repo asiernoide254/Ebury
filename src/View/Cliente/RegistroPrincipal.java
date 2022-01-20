@@ -18,7 +18,7 @@ public class RegistroPrincipal extends JFrame {
         setIconImage(new ImageIcon("resources/Ebury.png").getImage());
 
         ControllerCliente controlador = new ControllerCliente();
-        empresaButton.addActionListener(e -> controlador.onRegistrarseEmpresa());
-        personaFísicaButton.addActionListener(e -> controlador.onRegistrarsePersona());
+        empresaButton.addActionListener(e -> controlador.onRegistrarseEmpresa(this));
+        personaFísicaButton.addActionListener(e -> controlador.onRegistrarsePersona(this));
     }
 }

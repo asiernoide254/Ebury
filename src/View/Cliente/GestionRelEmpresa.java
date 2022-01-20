@@ -30,4 +30,8 @@ public class GestionRelEmpresa {
     private JTable table1;
     private JButton borrarButton;
     private JButton finalizarButton;
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
