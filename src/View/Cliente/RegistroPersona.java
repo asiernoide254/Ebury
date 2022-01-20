@@ -35,12 +35,13 @@ public class RegistroPersona extends JFrame {
         setIconImage(new ImageIcon("resources/Ebury.png").getImage());
 
         ControllerCliente controlador = new ControllerCliente();
-        registrarseButton.addActionListener(e -> controlador.onCompletarRegistroPersona());
+        registrarseButton.addActionListener(e -> controlador.onCompletarRegistroPersona(this));
         cancelarButton.addActionListener(e -> controlador.onCargarRegistroPrincipal(this));
     }
 
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        JDateChooser1 = new JDateChooser();
     }
 }
