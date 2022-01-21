@@ -94,21 +94,49 @@ public class ControllerCliente {
 
         //Contraseñas no iguales
         if (!notNull(nif, nombre, primerApellido, segundoApellido, segundoNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2)
-                || !passwordField1.equals(passwordField2)){
+                || !passwordField1.equals(passwordField2) || nifCorrecto(nif)  ){
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-        } else {
+        }
             //insertar cliente en BD
-
-            ExitoRegistroDialog dialog = new ExitoRegistroDialog();
+        try {
+            BD miBD = new BD();
+            miBD.Modify("INSERT INTO Invidual VALUES();");
+        } catch (SQLException ex) {
+            ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         }
 
+            ExitoRegistroDialog dialog = new ExitoRegistroDialog();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
 
+
+
+
+    }
+    private Boolean nifCorrecto (String nif){
+        Boolean res = true;
+        if (nif.length() !=9 ){
+            res = false;
+        }
+        int i =0;
+        while ( nif.charAt(i) >= 47 && nif.charAt(i) <= 57  && i < 8){
+            i++;
+        }
+
+        if (i < 8){
+            res = false;
+        }
+        if (nif.charAt(8) < 65  || nif.charAt(8) > 90){
+            res = false;
+        }
+        return res;
 
     }
 
