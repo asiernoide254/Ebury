@@ -2,9 +2,12 @@ package Controller;
 
 import Model.BD;
 import View.Cliente.*;
+import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ControllerCliente {
 
@@ -67,7 +70,7 @@ public class ControllerCliente {
 
     private boolean notNull(String... args) {
         for (String arg : args) {
-            if (arg == null) {
+            if (arg.equals("")) {
                 return false;
             }
         }
@@ -87,18 +90,16 @@ public class ControllerCliente {
 
         /**Querido Carlos, si tienes tiempo libre y quieres matar el tiempo, te propongo cambiar esto por un
          while para que cuando haya un valor se detenga el metodo, gracias por todo.**/
-        Boolean res = true;
-        for(String s : str) {
-            int len = s.length();
-
-            int i = 0;
-            while (i < len && ((i >= 65 && i <= 90) || (i >= 97 && i <= 122))) {
-                i++;
+        boolean res = true;
+        int i = 0;
+        while(res && i < str.length){
+            String aux = str[i];
+            int j = 0;
+            while (res && j < aux.length()){
+                res = Character.isLetter(aux.charAt(j));
+                j++;
             }
-
-            if (i < len) {
-                res = false;
-            }
+            i++;
         }
         return res;
     }
@@ -112,7 +113,7 @@ public class ControllerCliente {
         }
 
         int i = 1;
-        while (i < 9 && res == true) {
+        while (i < 9 && res) {
             char c = cif.charAt(i);
 
             if (c < 48 || c > 57) {
@@ -130,6 +131,7 @@ public class ControllerCliente {
         String primerApellido = formulario.gettPrimerApellido().getText();
         String segundoApellido  = formulario.gettSegundoApellido().getText();
         String segundoNombre = formulario.gettSegundoNombre().getText();
+        JDateChooser datechooser = formulario.getJDateChooser1();
         String tCalle = formulario.gettCalle().getText();
         String tPlantaPuertaOficina = formulario.gettPlantaPuertaOficina().getText();
         String tCiudad = formulario.gettCiudad().getText();
@@ -143,50 +145,71 @@ public class ControllerCliente {
         String passwordField1 = new String(formulario.getPasswordField1().getPassword());
         String passwordField2 = new String(formulario.getPasswordField2().getPassword());
 
+        Date fechaNacimiento = datechooser.getDate();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
         //Contraseñas no iguales
-        if (!notNull(nif, nombre, primerApellido, segundoApellido, segundoNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2)
-                || !passwordField1.equals(passwordField2) || nifCorrecto(nif)  ){
+        //falta por poner que es obligatoria la fecha de nacimiento
+        if (!notNull(nif, nombre, primerApellido, fechaNacimiento.toString(), tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2)
+                || !passwordField1.equals(passwordField2) || !checkearString(nombre, segundoNombre, primerApellido, segundoApellido, tCalle, tCiudad, tPais, tRegion)
+                || !checkearNumeros(tNumero) || !(tCP.length() == 5 && checkearNumeros(tCP) || !nifCorrecto(nif) )){
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-        }
+        }else{
             //insertar cliente en BD
-        try {
-            BD miBD = new BD();
-            miBD.Modify("INSERT INTO Invidual VALUES();");
-        } catch (SQLException ex) {
-            ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog();
-            dialog.pack();
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
+            try {
+                BD miBD = new BD();
+
+                Date today = new Date();
+
+                miBD.Modify("INSERT INTO Cliente (numeroIdentificacion,estado,fechaInicio)" +
+                        " VALUES('" + nif + "', 'Activo', '" + formatter.format(today) + "');");
+                miBD.Modify("INSERT INTO Persona (nombre,segundoNombre,apellido,segundoApellido,fechaNacimiento)" +
+                        " VALUES('" + nombre + "', '" + segundoNombre + "', '" + primerApellido
+                + "', '" + segundoApellido + "', '" + formatter.format(fechaNacimiento) + "');");
+                int clt = (int)miBD.SelectEscalar("SELECT MAX(id) FROM Cliente");
+                int pers = (int)miBD.SelectEscalar("SELECT MAX(id) FROM Persona");
+                miBD.Modify("INSERT INTO Individual (cliente, persona) VALUES(" + clt + ", " + pers + ");");
+                miBD.Modify("INSERT INTO Direccion (calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida, cliente)" +
+                        " VALUES('" + tCalle + "', " + tNumero + ", '" + tPlantaPuertaOficina + "', '" + tCiudad + "', '" + tRegion
+                                + "', " + tCP + ", '" + tPais + "', " + (validaDireccionActual?1:0) + ", " + clt + ");");
+
+                ExitoRegistroDialog dialog = new ExitoRegistroDialog(formulario);
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog();
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            }
+
         }
-
-            ExitoRegistroDialog dialog = new ExitoRegistroDialog();
-            dialog.pack();
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
-
-
-
-
     }
+
     private Boolean nifCorrecto (String nif){
-        Boolean res = true;
-        if (nif.length() !=9 ){
-            res = false;
+        boolean res = false;
+        if (nif.length() !=9){
+            return res;
         }
-        int i =0;
+        int i = 0;
         while ( nif.charAt(i) >= 47 && nif.charAt(i) <= 57  && i < 8){
             i++;
         }
 
         if (i < 8){
-            res = false;
+            return res;
         }
+
         if (nif.charAt(8) < 65  || nif.charAt(8) > 90){
-            res = false;
+            return res;
         }
+        res = true;
         return res;
 
     }
@@ -198,5 +221,14 @@ public class ControllerCliente {
         rp.pack();
         rp.setLocationRelativeTo(null);
         rp.setVisible(true);
+    }
+
+    public void onCargarPrincipalCliente(JFrame frame) {
+        frame.dispose();
+
+        PrincipalCliente pc = new PrincipalCliente("Ebury");
+        pc.pack();
+        pc.setLocationRelativeTo(null);
+        pc.setVisible(true);
     }
 }

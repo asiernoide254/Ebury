@@ -8,7 +8,7 @@ public class RegistroPrincipal extends JFrame {
     private JPanel panel1;
     private JButton personaFísicaButton;
     private JButton empresaButton;
-    private JTextArea seleccioneSiQuiereCrearTextArea;
+    private JLabel seleccioneSiQuiereCrearTextArea;
     private JPanel panelTexto;
 
     public RegistroPrincipal(String title) {

@@ -3,8 +3,6 @@ package View.Cliente;
 import Controller.ControllerCliente;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class PrincipalCliente extends JFrame {
     private JPanel panel1;

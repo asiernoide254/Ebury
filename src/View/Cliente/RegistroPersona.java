@@ -4,7 +4,6 @@ import Controller.ControllerCliente;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
-import java.net.PasswordAuthentication;
 
 public class RegistroPersona extends JFrame {
     private JPanel panel1;
@@ -73,9 +72,5 @@ public class RegistroPersona extends JFrame {
     public JPasswordField getPasswordField2() {
         return passwordField2;
     }
-
-
-
-
 
 }
