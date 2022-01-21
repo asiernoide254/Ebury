@@ -4,6 +4,7 @@ import Controller.ControllerCliente;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
+import java.net.PasswordAuthentication;
 
 public class RegistroPersona extends JFrame {
     private JPanel panel1;
@@ -44,4 +45,37 @@ public class RegistroPersona extends JFrame {
         // TODO: place custom component creation code here
         JDateChooser1 = new JDateChooser();
     }
+    public JTextField getNif() {
+        return tNIF;
+    }
+
+    public JTextField gettPrimerApellido(){return tPrimerApellido;}
+    public JTextField gettSegundoNombre() {return tSegundoNombre; }
+    public JTextField gettPrimerNombre(){return tPrimerNombre;}
+    public JTextField gettSegundoApellido(){return tSegundoApellido;}
+
+    public JDateChooser getJDateChooser1 (){return JDateChooser1;}
+    public JTextField gettCalle (){return tCalle;}
+    public JTextField gettPlantaPuertaOficina (){return tPlantaPuertaOficina;}
+    public JTextField gettCiudad (){return tCiudad;}
+    public JTextField gettPais (){return tPais;}
+    public JTextField gettNumero(){return tNumero;}
+    public JTextField gettRegion(){return tRegion;}
+    public JTextField getCP() {return tCP;}
+    public JCheckBox getValidaDireccionActualCheckBox() {
+        return validaDireccionActualCheckBox;
+    }
+
+    public JPasswordField getPasswordField1() {
+        return passwordField1;
+    }
+
+    public JPasswordField getPasswordField2() {
+        return passwordField2;
+    }
+
+
+
+
+
 }

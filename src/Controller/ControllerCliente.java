@@ -1,8 +1,7 @@
 package Controller;
 
-import View.Cliente.RegistroEmpresa;
-import View.Cliente.RegistroPersona;
-import View.Cliente.RegistroPrincipal;
+import View.Alemania.ErrorAlemania;
+import View.Cliente.*;
 
 import javax.swing.*;
 
@@ -41,7 +40,41 @@ public class ControllerCliente {
         String passwordField2 = new String(formulario.getPasswordField2().getPassword());
     }
 
-    public void onCompletarRegistroPersona(JFrame frame) {
+    public void onCompletarRegistroPersona(RegistroPersona formulario) {
+        String nif = formulario.getNif().getText();
+        String nombre = formulario.gettPrimerNombre().getText();
+        String primerApellido = formulario.gettPrimerApellido().getText();
+        String segundoApellido  = formulario.gettSegundoApellido().getText();
+        String segundoNombre = formulario.gettSegundoNombre().getText();
+        String tCalle = formulario.gettCalle().getText();
+        String tPlantaPuertaOficina = formulario.gettPlantaPuertaOficina().getText();
+        String tCiudad = formulario.gettCiudad().getText();
+        String tPais = formulario.gettPais().getText();
+        String tNumero = formulario.gettNumero().getText();
+        String tRegion = formulario.gettRegion().getText();
+        String tCP = formulario.getCP().getText();
+
+        boolean validaDireccionActual = formulario.getValidaDireccionActualCheckBox().isSelected();
+
+        String passwordField1 = new String(formulario.getPasswordField1().getPassword());
+        String passwordField2 = new String(formulario.getPasswordField2().getPassword());
+
+        //Contraseñas no iguales
+        if (!passwordField1.equals(passwordField2)  ){
+            ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        }else{
+            //insertar cliente en BD
+            ExitoRegistroDialog dialog = new ExitoRegistroDialog();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        }
+
+
+
     }
 
     public void onCargarRegistroPrincipal(JFrame frame) {
