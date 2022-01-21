@@ -43,7 +43,8 @@ public class ControllerCliente {
         String passwordField2 = new String(formulario.getPasswordField2().getPassword());
 
         //Insertar en la base de datos
-        if (!notNull(tCIF, tNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2)) {
+        if (!notNull(tCIF, tNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2)
+        || !checkearString(tNombre, tCalle, tCiudad, tPais, tRegion) || !checkearNumeros(tNumero) || !(tCP.length() == 5 && checkearNumeros(tCP))) {
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
@@ -71,6 +72,56 @@ public class ControllerCliente {
             }
         }
         return true;
+    }
+
+    private boolean checkearNumeros(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        }catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean checkearString(String... str) {
+
+        /**Querido Carlos, si tienes tiempo libre y quieres matar el tiempo, te propongo cambiar esto por un
+         while para que cuando haya un valor se detenga el metodo, gracias por todo.**/
+        Boolean res = true;
+        for(String s : str) {
+            int len = s.length();
+
+            int i = 0;
+            while (i < len && ((i >= 65 && i <= 90) || (i >= 97 && i <= 122))) {
+                i++;
+            }
+
+            if (i < len) {
+                res = false;
+            }
+        }
+        return res;
+    }
+
+    private boolean CIFcorrecto(String cif) {
+        Boolean res = true;
+        char letra = cif.charAt(0);
+
+        if(cif.length() != 9 || (letra < 65 || letra > 90)) {
+            res = false;
+        }
+
+        int i = 1;
+        while (i < 9 && res == true) {
+            char c = cif.charAt(i);
+
+            if (c < 48 || c > 57) {
+                res = false;
+            }
+            i++;
+        }
+
+        return res;
     }
 
     public void onCompletarRegistroPersona(RegistroPersona formulario) {
