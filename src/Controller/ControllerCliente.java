@@ -1,12 +1,14 @@
 package Controller;
 
-import View.Alemania.ErrorAlemania;
+import Model.BD;
 import View.Cliente.*;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class ControllerCliente {
 
+    //Boton de registro empresa clicado
     public void onRegistrarseEmpresa(JFrame frame) {
         frame.dispose();
 
@@ -16,6 +18,7 @@ public class ControllerCliente {
         rp.setVisible(true);
     }
 
+    //Boton de registro persona fisica clicado
     public void onRegistrarsePersona(JFrame frame) {
         frame.dispose();
 
@@ -38,6 +41,36 @@ public class ControllerCliente {
         boolean validaDireccionActual = formulario.getValidaDireccionActualCheckBox().isSelected();
         String passwordField1 = new String(formulario.getPasswordField1().getPassword());
         String passwordField2 = new String(formulario.getPasswordField2().getPassword());
+
+        //Insertar en la base de datos
+        if (!notNull(tCIF, tNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2)) {
+            ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        }
+
+        try {
+            BD miBD = new BD();
+            miBD.Modify("INSERT INTO Empresa (nombre) VALUES();");
+        } catch (SQLException ex) {
+            ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        }
+
+
+
+    }
+
+    private boolean notNull(String... args) {
+        for (String arg : args) {
+            if (arg == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void onCompletarRegistroPersona(RegistroPersona formulario) {
@@ -60,13 +93,15 @@ public class ControllerCliente {
         String passwordField2 = new String(formulario.getPasswordField2().getPassword());
 
         //Contraseñas no iguales
-        if (!passwordField1.equals(passwordField2)  ){
+        if (!notNull(nif, nombre, primerApellido, segundoApellido, segundoNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2)
+                || !passwordField1.equals(passwordField2)){
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-        }else{
+        } else {
             //insertar cliente en BD
+
             ExitoRegistroDialog dialog = new ExitoRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);

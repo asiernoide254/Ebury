@@ -86,7 +86,7 @@ public class BD {
         }
         catch (SQLException ex)
         {
-            throw new SQLException("Error en la sentencia SQL: " + ins+ ". " + ex.getMessage());
+            throw new SQLException("Error en la sentencia SQL: " + ins + ". " + ex.getMessage());
         }
     }
 
