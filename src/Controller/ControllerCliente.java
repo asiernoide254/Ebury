@@ -46,12 +46,14 @@ public class ControllerCliente {
         String passwordField2 = new String(formulario.getPasswordField2().getPassword());
 
         //Insertar en la base de datos
-        if (!notNull(tCIF, tNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2)
-        || !checkearString(tNombre, tCalle, tCiudad, tPais, tRegion) || !checkearNumeros(tNumero) || !(tCP.length() == 5 && checkearNumeros(tCP))) {
+        if (algunoNulo(tCIF, tNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2)
+        || !soloLetras(tNombre, tCalle, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !cifCorrecto(tCIF)) {
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
+        } else {
+
         }
 
         try {
@@ -63,21 +65,18 @@ public class ControllerCliente {
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         }
-
-
-
     }
 
-    private boolean notNull(String... args) {
+    private boolean algunoNulo(String... args) {
         for (String arg : args) {
             if (arg.equals("")) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    private boolean checkearNumeros(String str) {
+    private boolean esInteger(String str) {
         try {
             Integer.parseInt(str);
             return true;
@@ -86,10 +85,7 @@ public class ControllerCliente {
         }
     }
 
-    private boolean checkearString(String... str) {
-
-        /**Querido Carlos, si tienes tiempo libre y quieres matar el tiempo, te propongo cambiar esto por un
-         while para que cuando haya un valor se detenga el metodo, gracias por todo.**/
+    private boolean soloLetras(String... str) {
         boolean res = true;
         int i = 0;
         while(res && i < str.length){
@@ -104,25 +100,20 @@ public class ControllerCliente {
         return res;
     }
 
-    private boolean CIFcorrecto(String cif) {
-        Boolean res = true;
-        char letra = cif.charAt(0);
+    private boolean cifCorrecto(String cif) {
+        return cif.length() == 9 && letraCifCorrecta(cif) && esInteger(cif.substring(1, 8)) && ultimoCaracterValido(cif);
+    }
 
-        if(cif.length() != 9 || (letra < 65 || letra > 90)) {
-            res = false;
-        }
+    private boolean ultimoCaracterValido(String cif) {
+        char primerCaracter = Character.toUpperCase(cif.charAt(0));
+        char ultimoCaracter = cif.charAt(8);
+        return Character.isDigit(ultimoCaracter) || ((primerCaracter == 'P' || primerCaracter == 'X') && Character.isLetter(ultimoCaracter));
+    }
 
-        int i = 1;
-        while (i < 9 && res) {
-            char c = cif.charAt(i);
-
-            if (c < 48 || c > 57) {
-                res = false;
-            }
-            i++;
-        }
-
-        return res;
+    private boolean letraCifCorrecta(String cif) {
+        String letrasCorrectas = "ABCDEFGHPQSKLMX";
+        String letra = String.valueOf(Character.toUpperCase(cif.charAt(0)));
+        return letrasCorrectas.contains(letra);
     }
 
     public void onCompletarRegistroPersona(RegistroPersona formulario) {
@@ -149,10 +140,9 @@ public class ControllerCliente {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         //Contraseñas no iguales
-        //falta por poner que es obligatoria la fecha de nacimiento
-        if (!notNull(nif, nombre, primerApellido, fechaNacimiento.toString(), tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2)
-                || !passwordField1.equals(passwordField2) || !checkearString(nombre, segundoNombre, primerApellido, segundoApellido, tCalle, tCiudad, tPais, tRegion)
-                || !checkearNumeros(tNumero) || !(tCP.length() == 5 && checkearNumeros(tCP) || !nifCorrecto(nif) )){
+        if (algunoNulo(nif, nombre, primerApellido, fechaNacimiento.toString(), tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2)
+                || !passwordField1.equals(passwordField2) || !soloLetras(nombre, segundoNombre, primerApellido, segundoApellido, tCalle, tCiudad, tPais, tRegion)
+                || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !nifCorrecto(nif)){
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
@@ -192,26 +182,14 @@ public class ControllerCliente {
         }
     }
 
-    private Boolean nifCorrecto (String nif){
-        boolean res = false;
-        if (nif.length() !=9){
-            return res;
-        }
-        int i = 0;
-        while ( nif.charAt(i) >= 47 && nif.charAt(i) <= 57  && i < 8){
-            i++;
-        }
+    private boolean nifCorrecto (String nif){
+        return nif.length() == 9 && esInteger(nif.substring(0, 8)) && letraNifCorrecta(nif);
+    }
 
-        if (i < 8){
-            return res;
-        }
-
-        if (nif.charAt(8) < 65  || nif.charAt(8) > 90){
-            return res;
-        }
-        res = true;
-        return res;
-
+    private boolean letraNifCorrecta(String nif) {
+        String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        int numero = Integer.parseInt(nif.substring(0, 8));
+        return letras.charAt(numero % 23) == Character.toUpperCase(nif.charAt(8));
     }
 
     public void onCargarRegistroPrincipal(JFrame frame) {
