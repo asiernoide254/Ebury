@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class ControllerCliente {
 
@@ -46,8 +47,7 @@ public class ControllerCliente {
         String passwordField2 = new String(formulario.getPasswordField2().getPassword());
 
         //Insertar en la base de datos
-        if (algunoNulo(tCIF, tNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2)
-        || !soloLetras(tNombre, tCalle, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !cifCorrecto(tCIF)) {
+        if (algunoNulo(tCIF, tNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2) || !soloLetras(tNombre, tCalle, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !cifCorrecto(tCIF)) {
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
@@ -61,16 +61,16 @@ public class ControllerCliente {
             Date today = new Date();
 
             miBD.Modify("INSERT INTO Cliente (numeroIdentificacion, estado, fechaInicio) VALUES('" + tCIF + "', 'Activo', '" + formatter.format(today) + "');");
-            int clt = (int)miBD.SelectEscalar("SELECT MAX(id) FROM Cliente");
+            int clt = (int) miBD.SelectEscalar("SELECT MAX(id) FROM Cliente");
             miBD.Modify("INSERT INTO Empresa (cliente, nombre) VALUES(" + clt + ", '" + tNombre + "');");
-            miBD.Modify("INSERT INTO Direccion (calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida, cliente)" +
-                    " VALUES('" + tCalle + "', " + tNumero + ", '" + tPlantaPuertaOficina + "', '" + tCiudad + "', '" + tRegion
-                    + "', " + tCP + ", '" + tPais + "', " + (validaDireccionActual?1:0) + ", " + clt + ");");
+            miBD.Modify("INSERT INTO Direccion (calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida, cliente)" + " VALUES('" + tCalle + "', " + tNumero + ", '" + tPlantaPuertaOficina + "', '" + tCiudad + "', '" + tRegion + "', " + tCP + ", '" + tPais + "', " + (validaDireccionActual ? 1 : 0) + ", " + clt + ");");
 
-            ExitoRegistroDialog dialog = new ExitoRegistroDialog(formulario);
-            dialog.pack();
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
+            formulario.dispose();
+
+            GestionRelEmpresa relEmpresa = new GestionRelEmpresa("Ebury");
+            relEmpresa.pack();
+            relEmpresa.setLocationRelativeTo(null);
+            relEmpresa.setVisible(true);
         } catch (SQLException ex) {
             ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog();
             dialog.pack();
@@ -92,7 +92,7 @@ public class ControllerCliente {
         try {
             Integer.parseInt(str);
             return true;
-        }catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return false;
         }
     }
@@ -100,10 +100,10 @@ public class ControllerCliente {
     private boolean soloLetras(String... str) {
         boolean res = true;
         int i = 0;
-        while(res && i < str.length){
+        while (res && i < str.length) {
             String aux = str[i];
             int j = 0;
-            while (res && j < aux.length()){
+            while (res && j < aux.length()) {
                 res = Character.isLetter(aux.charAt(j)) || aux.charAt(j) == ' ';
                 j++;
             }
@@ -132,7 +132,7 @@ public class ControllerCliente {
         String nif = formulario.getNif().getText();
         String nombre = formulario.gettPrimerNombre().getText();
         String primerApellido = formulario.gettPrimerApellido().getText();
-        String segundoApellido  = formulario.gettSegundoApellido().getText();
+        String segundoApellido = formulario.gettSegundoApellido().getText();
         String segundoNombre = formulario.gettSegundoNombre().getText();
         JDateChooser datechooser = formulario.getJDateChooser1();
         String tCalle = formulario.gettCalle().getText();
@@ -152,31 +152,24 @@ public class ControllerCliente {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         //Contraseñas no iguales
-        if (algunoNulo(nif, nombre, primerApellido, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2)
-                || !passwordField1.equals(passwordField2) || !soloLetras(nombre, segundoNombre, primerApellido, segundoApellido, tCiudad, tPais, tRegion)
-                || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !nifCorrecto(nif) || !calleCorrecta(tCalle) || fechaNacimiento == null){
+        if (algunoNulo(nif, nombre, primerApellido, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2) || !soloLetras(nombre, segundoNombre, primerApellido, segundoApellido, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !nifCorrecto(nif) || !calleCorrecta(tCalle) || fechaNacimiento == null) {
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-        }else{
+        } else {
             //insertar cliente en BD
             try {
                 BD miBD = new BD();
 
                 Date today = new Date();
 
-                miBD.Modify("INSERT INTO Cliente (numeroIdentificacion,estado,fechaInicio)" +
-                        " VALUES('" + nif + "', 'Activo', '" + formatter.format(today) + "');");
-                miBD.Modify("INSERT INTO Persona (nombre,segundoNombre,apellido,segundoApellido,fechaNacimiento)" +
-                        " VALUES('" + nombre + "', '" + segundoNombre + "', '" + primerApellido
-                + "', '" + segundoApellido + "', '" + formatter.format(fechaNacimiento) + "');");
-                int clt = (int)miBD.SelectEscalar("SELECT MAX(id) FROM Cliente");
-                int pers = (int)miBD.SelectEscalar("SELECT MAX(id) FROM Persona");
+                miBD.Modify("INSERT INTO Cliente (numeroIdentificacion,estado,fechaInicio)" + " VALUES('" + nif + "', 'Activo', '" + formatter.format(today) + "');");
+                miBD.Modify("INSERT INTO Persona (nombre,segundoNombre,apellido,segundoApellido,fechaNacimiento)" + " VALUES('" + nombre + "', '" + segundoNombre + "', '" + primerApellido + "', '" + segundoApellido + "', '" + formatter.format(fechaNacimiento) + "');");
+                int clt = (int) miBD.SelectEscalar("SELECT MAX(id) FROM Cliente");
+                int pers = (int) miBD.SelectEscalar("SELECT MAX(id) FROM Persona");
                 miBD.Modify("INSERT INTO Individual (cliente, persona) VALUES(" + clt + ", " + pers + ");");
-                miBD.Modify("INSERT INTO Direccion (calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida, cliente)" +
-                        " VALUES('" + tCalle + "', " + tNumero + ", '" + tPlantaPuertaOficina + "', '" + tCiudad + "', '" + tRegion
-                                + "', " + tCP + ", '" + tPais + "', " + (validaDireccionActual?1:0) + ", " + clt + ");");
+                miBD.Modify("INSERT INTO Direccion (calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida, cliente)" + " VALUES('" + tCalle + "', " + tNumero + ", '" + tPlantaPuertaOficina + "', '" + tCiudad + "', '" + tRegion + "', " + tCP + ", '" + tPais + "', " + (validaDireccionActual ? 1 : 0) + ", " + clt + ");");
 
                 ExitoRegistroDialog dialog = new ExitoRegistroDialog(formulario);
                 dialog.pack();
@@ -197,7 +190,7 @@ public class ControllerCliente {
     private boolean calleCorrecta(String calle) {
         boolean res = true;
         int i = 0;
-        while(res && i < calle.length()) {
+        while (res && i < calle.length()) {
             char caracter = calle.charAt(i);
             res = Character.isLetter(caracter) || Character.isWhitespace(caracter);
             i++;
@@ -205,7 +198,7 @@ public class ControllerCliente {
         return res;
     }
 
-    private boolean nifCorrecto (String nif){
+    private boolean nifCorrecto(String nif) {
         return nif.length() == 9 && esInteger(nif.substring(0, 8)) && letraNifCorrecta(nif);
     }
 
@@ -231,5 +224,78 @@ public class ControllerCliente {
         pc.pack();
         pc.setLocationRelativeTo(null);
         pc.setVisible(true);
+    }
+
+    public void onFinalizarRegistroEmpresa(GestionRelEmpresa frame) {
+        //Supongo que aqui enseña el dialog y punto, porque realmente al darle a añadir ya añadiste todas las personas relacionadas
+
+        ExitoRegistroDialog dialog = new ExitoRegistroDialog(frame);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
+
+    public void onBorrarPersonaRelacionada(GestionRelEmpresa frame) {
+    }
+
+    public void onAñadirPersonaRelacionada(GestionRelEmpresa frame) {
+        String nif = frame.getNif().getText();
+        String nombre = frame.gettPrimerNombre().getText();
+        String primerApellido = frame.gettPrimerApellido().getText();
+        String segundoApellido = frame.gettSegundoApellido().getText();
+        String segundoNombre = frame.gettSegundoNombre().getText();
+        JDateChooser datechooser = frame.getJDateChooser1();
+        String tCalle = frame.gettCalle().getText();
+        String tPlantaPuertaOficina = frame.gettPlantaPuertaOficina().getText();
+        String tCiudad = frame.gettCiudad().getText();
+        String tPais = frame.gettPais().getText();
+        String tNumero = frame.gettNumero().getText();
+        String tRegion = frame.gettRegion().getText();
+        String tCP = frame.getCP().getText();
+
+        boolean validaDireccionActual = frame.getValidaDireccionActualCheckBox().isSelected();
+
+        String passwordField1 = new String(frame.getPasswordField1().getPassword());
+        String passwordField2 = new String(frame.getPasswordField2().getPassword());
+
+        Date fechaNacimiento = datechooser.getDate();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        if (algunoNulo(nif, nombre, primerApellido, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2) || !soloLetras(nombre, segundoNombre, primerApellido, segundoApellido, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !nifCorrecto(nif) || !calleCorrecta(tCalle) || fechaNacimiento == null) {
+            ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        } else {
+            try {
+                BD miBD = new BD();
+
+                Date today = new Date();
+
+                Object[] query = miBD.Select("SELECT * FROM Cliente WHERE nif = '" + nif + "', nombre = '" + nombre + "', apellido = '" + primerApellido + "';").get(0);
+
+                if (query != null) {
+                    //Se encuentra en la bd
+                    //Aqui hay que añadir en personasrelacionadas la persona y relacionarla con la empresa
+
+                } else {
+                    //No se encuentra en la bd
+                    miBD.Modify("INSERT INTO Cliente (numeroIdentificacion,estado,fechaInicio)" + " VALUES('" + nif + "', 'Activo', '" + formatter.format(today) + "');");
+                    miBD.Modify("INSERT INTO Persona (nombre,segundoNombre,apellido,segundoApellido,fechaNacimiento)" + " VALUES('" + nombre + "', '" + segundoNombre + "', '" + primerApellido + "', '" + segundoApellido + "', '" + formatter.format(fechaNacimiento) + "');");
+                    int clt = (int) miBD.SelectEscalar("SELECT MAX(id) FROM Cliente;");
+                    int pers = (int) miBD.SelectEscalar("SELECT MAX(id) FROM Persona;");
+                    miBD.Modify("INSERT INTO Individual (cliente, persona) VALUES(" + clt + ", " + pers + ");");
+                    miBD.Modify("INSERT INTO Direccion (calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida, cliente)" + " VALUES('" + tCalle + "', " + tNumero + ", '" + tPlantaPuertaOficina + "', '" + tCiudad + "', '" + tRegion + "', " + tCP + ", '" + tPais + "', " + (validaDireccionActual ? 1 : 0) + ", " + clt + ");");
+                    //Falta hacer que sean relacionados con la empresa (añadir a tabla PersonasRelacionadas)
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog();
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            }
+        }
     }
 }
