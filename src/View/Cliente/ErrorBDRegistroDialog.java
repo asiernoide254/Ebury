@@ -1,5 +1,7 @@
 package View.Cliente;
 
+import Controller.ControllerCliente;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,20 +10,22 @@ public class ErrorBDRegistroDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
 
-    public ErrorBDRegistroDialog() {
+    private JFrame frame;
+
+    public ErrorBDRegistroDialog(JFrame frame) {
+        this.frame = frame;
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        buttonOK.addActionListener(e -> onOK());
     }
 
     private void onOK() {
-        // add your code here
+        if(frame != null) {
+            new ControllerCliente().onCargarPrincipalCliente(frame);
+        }
         dispose();
     }
 }

@@ -10,6 +10,7 @@ public class GestionRelEmpresa extends JFrame {
     private JLabel DatosP;
     private JTextField tNIF;
     private JTextField tNombre;
+
     private JTextField tApellido;
     private JTextField tSegundoNombre;
     private JTextField tSegundoApellido;
@@ -25,7 +26,7 @@ public class GestionRelEmpresa extends JFrame {
     private JCheckBox tValida;
     private JPasswordField passwordField1;
     private JPasswordField passwordField2;
-    private JButton añadirButton;
+    private JButton anyadirButton;
     private JButton cancelarButton;
     private JComboBox comboBox1;
     private JTable table1;
@@ -40,9 +41,9 @@ public class GestionRelEmpresa extends JFrame {
 
         ControllerCliente controlador = new ControllerCliente();
         //A la hora de borrar hay que actualizar el grid (OJO)
-        añadirButton.addActionListener(e -> controlador.onAñadirPersonaRelacionada(this));
-        cancelarButton.addActionListener(e -> controlador.onCargarRegistroPrincipal(this));
-        borrarButton.addActionListener(e -> controlador.onBorrarPersonaRelacionada(this));
+        anyadirButton.addActionListener(e -> controlador.onAnyadirPersonaRelacionada(this));
+        cancelarButton.addActionListener(e -> controlador.onLimpiarFormulario(this));
+        borrarButton.addActionListener(e -> controlador.onBorrarPersonaRelacionada(table1));
         finalizarButton.addActionListener(e -> controlador.onFinalizarRegistroEmpresa(this));
     }
 
@@ -61,6 +62,9 @@ public class GestionRelEmpresa extends JFrame {
     public JTextField gettSegundoApellido(){return tSegundoApellido;}
 
     public JDateChooser getJDateChooser1 (){return JDateChooser1;}
+    public JComboBox getComboBox1() {
+        return comboBox1;
+    }
     public JTextField gettCalle (){return tCalle;}
     public JTextField gettPlantaPuertaOficina (){return tPlantaPuertaOficina;}
     public JTextField gettCiudad (){return tCiudad;}

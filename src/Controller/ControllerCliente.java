@@ -5,10 +5,10 @@ import View.Cliente.*;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class ControllerCliente {
 
@@ -47,35 +47,35 @@ public class ControllerCliente {
         String passwordField2 = new String(formulario.getPasswordField2().getPassword());
 
         //Insertar en la base de datos
-        if (algunoNulo(tCIF, tNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tRegion, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2) || !soloLetras(tNombre, tCalle, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !cifCorrecto(tCIF)) {
+        if (algunoNulo(tCIF, tNombre, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2) || !soloLetras(tNombre, tCalle, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !cifCorrecto(tCIF)) {
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-        }
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                BD miBD = new BD();
+                Date today = new Date();
 
-        try {
-            BD miBD = new BD();
-            Date today = new Date();
+                miBD.Modify("INSERT INTO Cliente (numeroIdentificacion, estado, fechaInicio) VALUES('" + tCIF + "', 'Activo', '" + formatter.format(today) + "');");
+                int clt = (int) miBD.SelectEscalar("SELECT MAX(id) FROM Cliente");
+                miBD.Modify("INSERT INTO Empresa (cliente, nombre) VALUES(" + clt + ", '" + tNombre + "');");
+                miBD.Modify("INSERT INTO Direccion (calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida, cliente)" + " VALUES('" + tCalle + "', " + tNumero + ", '" + tPlantaPuertaOficina + "', '" + tCiudad + "', '" + tRegion + "', " + tCP + ", '" + tPais + "', " + (validaDireccionActual ? 1 : 0) + ", " + clt + ");");
 
-            miBD.Modify("INSERT INTO Cliente (numeroIdentificacion, estado, fechaInicio) VALUES('" + tCIF + "', 'Activo', '" + formatter.format(today) + "');");
-            int clt = (int) miBD.SelectEscalar("SELECT MAX(id) FROM Cliente");
-            miBD.Modify("INSERT INTO Empresa (cliente, nombre) VALUES(" + clt + ", '" + tNombre + "');");
-            miBD.Modify("INSERT INTO Direccion (calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida, cliente)" + " VALUES('" + tCalle + "', " + tNumero + ", '" + tPlantaPuertaOficina + "', '" + tCiudad + "', '" + tRegion + "', " + tCP + ", '" + tPais + "', " + (validaDireccionActual ? 1 : 0) + ", " + clt + ");");
+                formulario.dispose();
 
-            formulario.dispose();
-
-            GestionRelEmpresa relEmpresa = new GestionRelEmpresa("Ebury");
-            relEmpresa.pack();
-            relEmpresa.setLocationRelativeTo(null);
-            relEmpresa.setVisible(true);
-        } catch (SQLException ex) {
-            ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog();
-            dialog.pack();
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
+                GestionRelEmpresa relEmpresa = new GestionRelEmpresa("Ebury");
+                relEmpresa.pack();
+                relEmpresa.setLocationRelativeTo(null);
+                relEmpresa.setVisible(true);
+            } catch (SQLException ex) {
+                ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog(formulario);
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            }
         }
     }
 
@@ -152,7 +152,7 @@ public class ControllerCliente {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         //Contraseñas no iguales
-        if (algunoNulo(nif, nombre, primerApellido, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2) || !soloLetras(nombre, segundoNombre, primerApellido, segundoApellido, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !nifCorrecto(nif) || !calleCorrecta(tCalle) || fechaNacimiento == null) {
+        if (algunoNulo(nif, nombre, primerApellido, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2) || !soloLetras(nombre, segundoNombre, primerApellido, segundoApellido, tCalle, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !nifCorrecto(nif) || fechaNacimiento == null) {
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
@@ -178,24 +178,13 @@ public class ControllerCliente {
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog();
+                ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog(formulario);
                 dialog.pack();
                 dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
             }
 
         }
-    }
-
-    private boolean calleCorrecta(String calle) {
-        boolean res = true;
-        int i = 0;
-        while (res && i < calle.length()) {
-            char caracter = calle.charAt(i);
-            res = Character.isLetter(caracter) || Character.isWhitespace(caracter);
-            i++;
-        }
-        return res;
     }
 
     private boolean nifCorrecto(String nif) {
@@ -235,10 +224,28 @@ public class ControllerCliente {
         dialog.setVisible(true);
     }
 
-    public void onBorrarPersonaRelacionada(GestionRelEmpresa frame) {
+    public void onBorrarPersonaRelacionada(JTable table) {
+        int fila = table.getSelectedRow();
+        if(fila >= 0) {
+            String nif = table.getValueAt(fila, 1).toString();
+
+            try {
+                BD miBD = new BD();
+                int idPersona = (int) miBD.SelectEscalar("SELECT P.id FROM Persona P, Individual I, Cliente C WHERE C.numeroIdentificacion = '" + nif + "' AND C.id = I.cliente AND P.id = I.persona;");
+                miBD.Modify("DELETE FROM Cliente WHERE numeroIdentificacion = '" + nif + "';");
+                miBD.Modify("DELETE FROM Persona WHERE id = " + idPersona + ";");
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.removeRow(fila);
+            } catch (SQLException ex) {
+                ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog(null);
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            }
+        }
     }
 
-    public void onAñadirPersonaRelacionada(GestionRelEmpresa frame) {
+    public void onAnyadirPersonaRelacionada(GestionRelEmpresa frame) {
         String nif = frame.getNif().getText();
         String nombre = frame.gettPrimerNombre().getText();
         String primerApellido = frame.gettPrimerApellido().getText();
@@ -262,7 +269,7 @@ public class ControllerCliente {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 
-        if (algunoNulo(nif, nombre, primerApellido, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2) || !soloLetras(nombre, segundoNombre, primerApellido, segundoApellido, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !nifCorrecto(nif) || !calleCorrecta(tCalle) || fechaNacimiento == null) {
+        if (algunoNulo(nif, nombre, primerApellido, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2) || !passwordField1.equals(passwordField2) || !soloLetras(nombre, segundoNombre, primerApellido, segundoApellido, tCalle, tCiudad, tPais, tRegion) || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !nifCorrecto(nif) || fechaNacimiento == null) {
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
@@ -291,11 +298,31 @@ public class ControllerCliente {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog();
+                ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog(null);
                 dialog.pack();
                 dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
             }
         }
+    }
+
+    public void onLimpiarFormulario(GestionRelEmpresa formulario) {
+        formulario.getNif().setText("");
+        formulario.gettPrimerNombre().setText("");
+        formulario.gettPrimerApellido().setText("");
+        formulario.gettSegundoApellido().setText("");
+        formulario.gettSegundoNombre().setText("");
+        formulario.getJDateChooser1().setDate(null);
+        formulario.getComboBox1().setSelectedIndex(0);
+        formulario.gettCalle().setText("");
+        formulario.gettPlantaPuertaOficina().setText("");
+        formulario.gettCiudad().setText("");
+        formulario.gettPais().setText("");
+        formulario.gettNumero().setText("");
+        formulario.gettRegion().setText("");
+        formulario.getCP().setText("");
+        formulario.getValidaDireccionActualCheckBox().setSelected(false);
+        formulario.getPasswordField1().setText("");
+        formulario.getPasswordField2().setText("");
     }
 }
