@@ -52,13 +52,25 @@ public class ControllerCliente {
             dialog.pack();
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-        } else {
-
         }
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         try {
             BD miBD = new BD();
-            miBD.Modify("INSERT INTO Empresa (nombre) VALUES();");
+            Date today = new Date();
+
+            miBD.Modify("INSERT INTO Cliente (numeroIdentificacion, estado, fechaInicio) VALUES('" + tCIF + "', 'Activo', '" + formatter.format(today) + "');");
+            int clt = (int)miBD.SelectEscalar("SELECT MAX(id) FROM Cliente");
+            miBD.Modify("INSERT INTO Empresa (cliente, nombre) VALUES(" + clt + ", '" + tNombre + "');");
+            miBD.Modify("INSERT INTO Direccion (calle, numero, plantaPuertaOficina, ciudad, region, codigoPostal, pais, valida, cliente)" +
+                    " VALUES('" + tCalle + "', " + tNumero + ", '" + tPlantaPuertaOficina + "', '" + tCiudad + "', '" + tRegion
+                    + "', " + tCP + ", '" + tPais + "', " + (validaDireccionActual?1:0) + ", " + clt + ");");
+
+            ExitoRegistroDialog dialog = new ExitoRegistroDialog(formulario);
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
         } catch (SQLException ex) {
             ErrorBDRegistroDialog dialog = new ErrorBDRegistroDialog();
             dialog.pack();
@@ -92,7 +104,7 @@ public class ControllerCliente {
             String aux = str[i];
             int j = 0;
             while (res && j < aux.length()){
-                res = Character.isLetter(aux.charAt(j));
+                res = Character.isLetter(aux.charAt(j)) || aux.charAt(j) == ' ';
                 j++;
             }
             i++;
