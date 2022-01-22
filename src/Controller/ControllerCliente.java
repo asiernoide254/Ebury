@@ -140,9 +140,9 @@ public class ControllerCliente {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         //Contraseñas no iguales
-        if (algunoNulo(nif, nombre, primerApellido, fechaNacimiento.toString(), tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2)
-                || !passwordField1.equals(passwordField2) || !soloLetras(nombre, segundoNombre, primerApellido, segundoApellido, tCalle, tCiudad, tPais, tRegion)
-                || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !nifCorrecto(nif)){
+        if (algunoNulo(nif, nombre, primerApellido, tCalle, tPlantaPuertaOficina, tCiudad, tPais, tNumero, tCP, passwordField1, passwordField2)
+                || !passwordField1.equals(passwordField2) || !soloLetras(nombre, segundoNombre, primerApellido, segundoApellido, tCiudad, tPais, tRegion)
+                || !esInteger(tNumero) || tCP.length() != 5 || !esInteger(tCP) || !nifCorrecto(nif) || !calleCorrecta(tCalle) || fechaNacimiento == null){
             ErrorDatosRegistroDialog dialog = new ErrorDatosRegistroDialog();
             dialog.pack();
             dialog.setLocationRelativeTo(null);
@@ -180,6 +180,17 @@ public class ControllerCliente {
             }
 
         }
+    }
+
+    private boolean calleCorrecta(String calle) {
+        boolean res = true;
+        int i = 0;
+        while(res && i < calle.length()) {
+            char caracter = calle.charAt(i);
+            res = Character.isLetter(caracter) || Character.isWhitespace(caracter);
+            i++;
+        }
+        return res;
     }
 
     private boolean nifCorrecto (String nif){
