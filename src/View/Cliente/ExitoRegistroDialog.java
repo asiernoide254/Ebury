@@ -12,21 +12,18 @@ public class ExitoRegistroDialog extends JDialog {
     private JFrame frame;
 
     public ExitoRegistroDialog(JFrame fr) {
+        setTitle("Ebury");
         setContentPane(contentPane);
+        setIconImage(new ImageIcon("resources/Ebury.png").getImage());
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
         frame = fr;
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        buttonOK.addActionListener(e -> onOK());
     }
 
     private void onOK() {
-        // add your code here
         dispose();
         ControllerCliente cl = new ControllerCliente();
         cl.onCargarPrincipalCliente(frame);

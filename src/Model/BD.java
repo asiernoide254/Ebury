@@ -10,67 +10,54 @@ public class BD {
     private final String USER = "grupo12";
     private final String PSW = "TtkuXmB872ZbygTR";
 
-    public BD () throws SQLException {
-        con = DriverManager.getConnection(URL,USER,PSW);
+    public BD() throws SQLException {
+        con = DriverManager.getConnection(URL, USER, PSW);
     }
-    protected void finalize () throws Throwable
-    {
-        try
-        {
-            if (con!=null)  con.close();
-        }
-        catch (SQLException ex)
-        {
+
+    protected void finalize() {
+        try {
+            if (con != null) con.close();
+        } catch (SQLException ex) {
             throw new Error("Error al Cerrar la Conexión." + ex.getMessage());
         }
     }
 
-    public Object SelectEscalar(String sel)
-    {
+    public Object SelectEscalar(String sel) {
         ResultSet rset;
         Object res = null;
-        try
-        {
+        try {
             Statement stmt = con.createStatement();
             rset = stmt.executeQuery(sel);
             rset.next();
             res = rset.getObject(1);
             rset.close();
             stmt.close();
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new Error("Error en el SELECT: " + sel + ". " + ex.getMessage());
         }
 
         return res;
     }
 
-    public List<Object[]> Select(String sel)
-    {
+    public List<Object[]> Select(String sel) {
         ResultSet rset;
-        List<Object[]> lista = new ArrayList<Object[]>();
-        try
-        {
+        List<Object[]> lista = new ArrayList<>();
+        try {
             Statement stmt = con.createStatement();
             rset = stmt.executeQuery(sel);
             ResultSetMetaData meta = rset.getMetaData();
             int numCol = meta.getColumnCount();
-            while (rset.next())
-            {
+            while (rset.next()) {
                 Object[] tupla = new Object[numCol];
-                for(int i=0; i<numCol;++i)
-                {
-                    tupla[i] = rset.getObject(i+1);
+                for (int i = 0; i < numCol; ++i) {
+                    tupla[i] = rset.getObject(i + 1);
                 }
                 lista.add(tupla);
             }
             rset.close();
             stmt.close();
-        }
-        catch (SQLException ex)
-        {
-            throw new Error("Error en el SELECT: " + sel + ". " + ex.getMessage() );
+        } catch (SQLException ex) {
+            throw new Error("Error en el SELECT: " + sel + ". " + ex.getMessage());
         }
 
         return lista;
@@ -78,14 +65,11 @@ public class BD {
 
     //Modify() incluye Insert, Update y Delete
     public void Modify(String ins) throws SQLException {
-        try
-        {
+        try {
             Statement stmt = con.createStatement();
             stmt.executeUpdate(ins);
             stmt.close();
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new SQLException("Error en la sentencia SQL: " + ins + ". " + ex.getMessage());
         }
     }

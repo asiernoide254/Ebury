@@ -28,6 +28,11 @@ public class RegistroPersona extends JFrame {
     private JButton registrarseButton;
     private JButton cancelarButton;
 
+    private void createUIComponents() {
+        JDateChooser1 = new JDateChooser();
+        JDateChooser1.setDateFormatString("dd/MM/yyyy");
+    }
+
     public RegistroPersona(String title) {
         super(title);
         setContentPane(panel1);
@@ -39,28 +44,58 @@ public class RegistroPersona extends JFrame {
         cancelarButton.addActionListener(e -> controlador.onCargarRegistroPrincipal(this));
     }
 
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-        JDateChooser1 = new JDateChooser();
-    }
     public JTextField getNif() {
         return tNIF;
     }
 
-    public JTextField gettPrimerApellido(){return tPrimerApellido;}
-    public JTextField gettSegundoNombre() {return tSegundoNombre; }
-    public JTextField gettPrimerNombre(){return tPrimerNombre;}
-    public JTextField gettSegundoApellido(){return tSegundoApellido;}
+    public JTextField gettPrimerApellido() {
+        return tPrimerApellido;
+    }
 
-    public JDateChooser getJDateChooser1 (){return JDateChooser1;}
-    public JTextField gettCalle (){return tCalle;}
-    public JTextField gettPlantaPuertaOficina (){return tPlantaPuertaOficina;}
-    public JTextField gettCiudad (){return tCiudad;}
-    public JTextField gettPais (){return tPais;}
-    public JTextField gettNumero(){return tNumero;}
-    public JTextField gettRegion(){return tRegion;}
-    public JTextField getCP() {return tCP;}
+    public JTextField gettSegundoNombre() {
+        return tSegundoNombre;
+    }
+
+    public JTextField gettPrimerNombre() {
+        return tPrimerNombre;
+    }
+
+    public JTextField gettSegundoApellido() {
+        return tSegundoApellido;
+    }
+
+    public JDateChooser getJDateChooser1() {
+        return JDateChooser1;
+    }
+
+    public JTextField gettCalle() {
+        return tCalle;
+    }
+
+    public JTextField gettPlantaPuertaOficina() {
+        return tPlantaPuertaOficina;
+    }
+
+    public JTextField gettCiudad() {
+        return tCiudad;
+    }
+
+    public JTextField gettPais() {
+        return tPais;
+    }
+
+    public JTextField gettNumero() {
+        return tNumero;
+    }
+
+    public JTextField gettRegion() {
+        return tRegion;
+    }
+
+    public JTextField getCP() {
+        return tCP;
+    }
+
     public JCheckBox getValidaDireccionActualCheckBox() {
         return validaDireccionActualCheckBox;
     }

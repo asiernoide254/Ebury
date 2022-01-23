@@ -6,9 +6,9 @@ import javax.swing.*;
 
 public class RegistroPrincipal extends JFrame {
     private JPanel panel1;
-    private JButton personaFísicaButton;
+    private JButton personaFisicaButton;
     private JButton empresaButton;
-    private JLabel seleccioneSiQuiereCrearTextArea;
+    private JLabel seleccioneSiQuiereCrearLabel;
     private JPanel panelTexto;
 
     public RegistroPrincipal(String title) {
@@ -19,6 +19,6 @@ public class RegistroPrincipal extends JFrame {
 
         ControllerCliente controlador = new ControllerCliente();
         empresaButton.addActionListener(e -> controlador.onRegistrarseEmpresa(this));
-        personaFísicaButton.addActionListener(e -> controlador.onRegistrarsePersona(this));
+        personaFisicaButton.addActionListener(e -> controlador.onRegistrarsePersona(this));
     }
 }

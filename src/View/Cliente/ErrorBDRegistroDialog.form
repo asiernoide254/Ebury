@@ -63,12 +63,12 @@
               </component>
             </children>
           </grid>
-          <component id="a3f6b" class="javax.swing.JLabel">
+          <component id="a3f6b" class="javax.swing.JLabel" binding="textoError">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="No se ha podido crear la cuenta por problemas de acceso a la base de datos."/>
+              <text value=""/>
             </properties>
           </component>
         </children>

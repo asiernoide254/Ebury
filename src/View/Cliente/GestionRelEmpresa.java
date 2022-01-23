@@ -4,6 +4,7 @@ import Controller.ControllerCliente;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class GestionRelEmpresa extends JFrame {
     private JPanel panel1;
@@ -33,45 +34,86 @@ public class GestionRelEmpresa extends JFrame {
     private JButton borrarButton;
     private JButton finalizarButton;
 
-    public GestionRelEmpresa(String title) {
+    private void createUIComponents() {
+        JDateChooser1 = new JDateChooser();
+        JDateChooser1.setDateFormatString("dd/MM/yyyy");
+    }
+
+    public GestionRelEmpresa(String title, int idEmpresa) {
         super(title);
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(new ImageIcon("resources/Ebury.png").getImage());
 
+        DefaultTableModel model = (DefaultTableModel) table1.getModel();
+        model.setColumnCount(3);
+        model.addRow(new String[]{"Nombre", "NIF", "Tipo"});
+        model.fireTableRowsInserted(0, 0);
+
         ControllerCliente controlador = new ControllerCliente();
         //A la hora de borrar hay que actualizar el grid (OJO)
-        anyadirButton.addActionListener(e -> controlador.onAnyadirPersonaRelacionada(this));
+        anyadirButton.addActionListener(e -> controlador.onAnyadirPersonaRelacionada(idEmpresa, this));
         cancelarButton.addActionListener(e -> controlador.onLimpiarFormulario(this));
         borrarButton.addActionListener(e -> controlador.onBorrarPersonaRelacionada(table1));
         finalizarButton.addActionListener(e -> controlador.onFinalizarRegistroEmpresa(this));
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-        JDateChooser1 = new JDateChooser();
     }
 
     public JTextField getNif() {
         return tNIF;
     }
 
-    public JTextField gettPrimerApellido(){return tApellido;}
-    public JTextField gettSegundoNombre() {return tSegundoNombre; }
-    public JTextField gettPrimerNombre(){return tNombre;}
-    public JTextField gettSegundoApellido(){return tSegundoApellido;}
+    public JTextField gettPrimerApellido() {
+        return tApellido;
+    }
 
-    public JDateChooser getJDateChooser1 (){return JDateChooser1;}
+    public JTextField gettSegundoNombre() {
+        return tSegundoNombre;
+    }
+
+    public JTextField gettPrimerNombre() {
+        return tNombre;
+    }
+
+    public JTextField gettSegundoApellido() {
+        return tSegundoApellido;
+    }
+
+    public JDateChooser getJDateChooser1() {
+        return JDateChooser1;
+    }
+
     public JComboBox getComboBox1() {
         return comboBox1;
     }
-    public JTextField gettCalle (){return tCalle;}
-    public JTextField gettPlantaPuertaOficina (){return tPlantaPuertaOficina;}
-    public JTextField gettCiudad (){return tCiudad;}
-    public JTextField gettPais (){return tPais;}
-    public JTextField gettNumero(){return tNumero;}
-    public JTextField gettRegion(){return tRegion;}
-    public JTextField getCP() {return tCP;}
+
+    public JTextField gettCalle() {
+        return tCalle;
+    }
+
+    public JTextField gettPlantaPuertaOficina() {
+        return tPlantaPuertaOficina;
+    }
+
+    public JTextField gettCiudad() {
+        return tCiudad;
+    }
+
+    public JTextField gettPais() {
+        return tPais;
+    }
+
+    public JTextField gettNumero() {
+        return tNumero;
+    }
+
+    public JTextField gettRegion() {
+        return tRegion;
+    }
+
+    public JTextField getCP() {
+        return tCP;
+    }
+
     public JCheckBox getValidaDireccionActualCheckBox() {
         return tValida;
     }
@@ -82,5 +124,9 @@ public class GestionRelEmpresa extends JFrame {
 
     public JPasswordField getPasswordField2() {
         return passwordField2;
+    }
+
+    public JTable getTable1() {
+        return table1;
     }
 }
